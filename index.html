@@ -86,15 +86,9 @@
   .card-name{font-size:1.2rem; font-weight:700; flex:1;}
   .card-cats{display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;}
   .card-cat{font-size:.72rem; background:var(--card2); border:1px solid var(--border); padding:3px 10px; border-radius:8px; color:var(--muted);}
-  .card-cuisine{color:var(--muted); font-size:.85rem; margin-bottom:12px;}
   .card-stats{display:flex; gap:16px; margin-bottom:14px; flex-wrap:wrap; font-size:.85rem;}
   .card-stat{display:flex; align-items:center; gap:4px;}
   .card-stat b{color:var(--accent2);}
-  .card-cta{
-    display:inline-flex; align-items:center; gap:5px; font-size:.82rem; font-weight:600;
-    color:var(--accent); padding-top:8px; border-top:1px solid var(--border); width:100%;
-    justify-content:flex-end;
-  }
 
   /* ===== 詳情頁 ===== */
   .detail-back{
@@ -206,7 +200,7 @@
   <div class="stats">
     <div class="stat"><span data-i18n="statResto">餐廳：</span><b id="rCount">0</b></div>
     <div class="stat"><span data-i18n="statDish">菜式：</span><b id="dCount">0</b></div>
-    <div class="stat"><span data-i18n="statMin">最平：</span><b id="minP">—</b></div>
+    <div class="stat"><span data-i18n="statMin">菜式：</span><b id="minP">0</b></div>
   </div>
 </header>
 
@@ -270,8 +264,8 @@
 const I18N = {
   "zh-HK": {
     title:'🍽️ 餐廳 <span>Menu 匯集</span>',
-    subtitle:'一個地方睇齊所有餐廳 menu，唔使周圍搵',
-    statResto:'餐廳：', statDish:'菜式：', statMin:'最平：',
+    subtitle:'睇齊所有餐廳嘅 menu，唔使再周圍搵',
+    statResto:'餐廳：', statDish:'菜單：', statMin:'菜式：',
     searchPh:'🔍 搜尋餐廳 / 菜式…',
     menuSearchPh:'🔍 搜尋…',
     lblCountry:'菜系', lblType:'類型',
@@ -287,8 +281,8 @@ const I18N = {
   },
   "zh-CN": {
     title:'🍽️ 餐厅 <span>菜单汇集</span>',
-    subtitle:'一个地方看齐所有餐厅 menu，不用到处找',
-    statResto:'餐厅：', statDish:'菜品：', statMin:'最便宜：',
+    subtitle:'看齐所有餐厅的 menu，不用再到处找',
+    statResto:'餐厅：', statDish:'菜单：', statMin:'菜品：',
     searchPh:'🔍 搜索餐厅 / 菜品…',
     menuSearchPh:'🔍 搜索…',
     lblCountry:'菜系', lblType:'类型',
@@ -304,8 +298,8 @@ const I18N = {
   },
   "en": {
     title:'🍽️ Restaurant <span>Menu Hub</span>',
-    subtitle:'All restaurant menus in one place — no more digging around',
-    statResto:'Restaurants: ', statDish:'Dishes: ', statMin:'Cheapest: ',
+    subtitle:'All restaurant menus in one place — no more digging',
+    statResto:'Restaurants: ', statDish:'Menus: ', statMin:'Dishes: ',
     searchPh:'🔍 Search restaurants / dishes…',
     menuSearchPh:'🔍 Search…',
     lblCountry:'Cuisine', lblType:'Type',
@@ -395,13 +389,11 @@ function renderRestaurants(){
         ${r.countries.map(c=>`<span class="card-cat">${T(CATEGORIES.countries.find(x=>x.key===c)?.label||'')}</span>`).join('')}
         ${r.types.map(c=>`<span class="card-cat">${T(CATEGORIES.types.find(x=>x.key===c)?.label||'')}</span>`).join('')}
       </div>
-      <div class="card-cuisine">${T(r.cuisine)}</div>
       <div class="card-stats">
         ${r.rating?`<span class="card-stat">⭐ <b>${r.rating.score}</b> <span style="color:var(--muted);font-size:.75rem">${r.rating.src}</span></span>`:''}
         <span class="card-stat">💵 <b>$${mp}${curLang==='en'?' up':' 起'}</b></span>
         <span class="card-stat">🏬 <b>${cnt}</b> ${t.branchLabel}</span>
       </div>
-      <div class="card-cta">${t.viewMenu}</div>
     </div>`;
   }).join('');
 }
@@ -425,23 +417,18 @@ function openRestaurant(id){
         ${r.countries.map(c=>`<span class="card-cat">${T(CATEGORIES.countries.find(x=>x.key===c)?.label||'')}</span>`).join('')}
         ${r.types.map(c=>`<span class="card-cat">${T(CATEGORIES.types.find(x=>x.key===c)?.label||'')}</span>`).join('')}
       </div>
-      <div class="detail-cuisine">${T(r.cuisine)} · ${T(r.area)}</div>
+      <div class="detail-cuisine">${T(r.cuisine)}</div>
       <div class="detail-feat">
         ${r.features.map(f=>`<span class="feat">${T(FEATURES[f]||{'zh-HK':f})}</span>`).join('')}
       </div>
     </div>
-    ${r.rating||r.rating2?`
+    ${r.rating?`
     <div class="ratings">
-      ${r.rating?`<div class="rating-card">
+      <div class="rating-card">
         <div class="rating-src">${r.rating.src}</div>
         <div class="rating-val"><span class="rating-num">${r.rating.score}<small>/${r.rating.max}</small></span><span class="stars">${stars}</span></div>
         <div class="rating-cnt">${T(r.rating.count)}</div>
-      </div>`:''}
-      ${r.rating2?`<div class="rating-card">
-        <div class="rating-src">${T(r.rating2.srcLabel)}</div>
-        <div class="rating-val"><span class="rating-num">${r.rating2.score}<small>/${r.rating2.max}</small></span><span class="stars">${renderStars(r.rating2.score,r.rating2.max)}</span></div>
-        <div class="rating-cnt">${T(r.rating2.desc)}</div>
-      </div>`:''}
+      </div>
     </div>`:''}
     <div class="branches-acc">
       <div class="branches-head">🏬 <span>${t.lblBranches}</span> <span class="cnt-badge">${r.branches.length}</span></div>
@@ -528,11 +515,11 @@ function applyLang(lang){
   // 重設 chips active 狀態
   document.querySelectorAll('#countryFilters .chip').forEach(c=>c.classList.toggle('active', c.dataset.cat===curCountry));
   document.querySelectorAll('#typeFilters .chip').forEach(c=>c.classList.toggle('active', c.dataset.cat===curType));
-  // 統計
+  // 統計：餐廳=菜單（一家餐廳一個菜單），菜式=所有菜品總數
   document.getElementById('rCount').textContent=RESTAURANTS.length;
-  document.getElementById('dCount').textContent=RESTAURANTS.reduce((s,r)=>s+r.dishes.length,0);
-  const allPrices=RESTAURANTS.flatMap(r=>r.dishes.map(d=>d.p));
-  document.getElementById('minP').textContent='$'+Math.min(...allPrices);
+  document.getElementById('dCount').textContent=RESTAURANTS.length; // 菜單數 = 餐廳數
+  const totalDishes=RESTAURANTS.reduce((s,r)=>s+r.dishes.length,0);
+  document.getElementById('minP').textContent=totalDishes;
   // 重新渲染
   renderRestaurants();
   if(curResto) openRestaurant(curResto);

@@ -44,8 +44,8 @@
   /* ===== Sticky 篩選列 ===== */
   .controls{
     position:sticky; top:0; z-index:10; background:rgba(15,17,21,.96); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--border); padding:12px 20px;
-    display:flex; flex-direction:column; gap:8px; align-items:center;
+    border-bottom:1px solid var(--border); padding:14px 20px;
+    display:flex; flex-direction:column; gap:12px; align-items:center;
   }
   .search{
     width:100%; max-width:480px; padding:10px 14px;
@@ -53,8 +53,8 @@
     color:var(--txt); font-size:.95rem;
   }
   .search:focus{outline:none; border-color:var(--accent);}
-  .filter-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center;}
-  .filter-group{display:flex; gap:6px; flex-wrap:wrap; align-items:center;}
+  .filter-row{display:flex; gap:10px 16px; row-gap:10px; flex-wrap:wrap; justify-content:center; align-items:center;}
+  .filter-group{display:flex; gap:6px; row-gap:6px; flex-wrap:wrap; align-items:center;}
   .filter-label{font-size:.72rem; color:var(--muted); margin-right:2px; text-transform:uppercase; letter-spacing:.5px;}
   .chip{
     padding:6px 12px; border-radius:20px; border:1px solid var(--border);
@@ -72,7 +72,7 @@
   /* ===== 餐廳列表卡片 ===== */
   .list-wrap{max-width:980px; margin:18px auto 0; padding:0 20px;}
   .list-info{color:var(--muted); font-size:.82rem; margin-bottom:12px;}
-  .card-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;}
+  .card-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; align-items:start;}
   .resto-card{
     background:linear-gradient(135deg,var(--card) 0%, var(--card2) 100%);
     border:1px solid var(--border); border-radius:16px; padding:20px;
@@ -184,6 +184,9 @@
     .item{padding:14px;}
     .card-grid{grid-template-columns:1fr;}
     .menu-search{width:120px;}
+    .controls{padding:12px 14px; gap:10px;}
+    .filter-row{flex-direction:column; gap:8px; width:100%;}
+    .filter-group{width:100%; justify-content:flex-start;}
   }
 </style>
 </head>
@@ -270,7 +273,8 @@ const I18N = {
     statResto:'餐廳：', statDish:'菜式：', statMin:'最平：',
     searchPh:'🔍 搜尋餐廳 / 菜式…',
     menuSearchPh:'🔍 搜尋…',
-    lblCountry:'國家', lblType:'類型',
+    lblCountry:'菜系', lblType:'類型',
+    filterAll:'全部',
     sortDef:'預設排序', sortRating:'評分 ↓ 高至低', sortAsc:'最平 ↑ 低至高', sortDesc:'價錢 ↓ 高至低',
     back:'返回列表', menuTitle:'Menu',
     viewMenu:'查看 Menu →', branchLabel:'間分店',
@@ -286,7 +290,8 @@ const I18N = {
     statResto:'餐厅：', statDish:'菜品：', statMin:'最便宜：',
     searchPh:'🔍 搜索餐厅 / 菜品…',
     menuSearchPh:'🔍 搜索…',
-    lblCountry:'国家', lblType:'类型',
+    lblCountry:'菜系', lblType:'类型',
+    filterAll:'全部',
     sortDef:'默认排序', sortRating:'评分 ↓ 高到低', sortAsc:'最便宜 ↑ 低到高', sortDesc:'价格 ↓ 高到低',
     back:'返回列表', menuTitle:'Menu',
     viewMenu:'查看 Menu →', branchLabel:'间分店',
@@ -303,6 +308,7 @@ const I18N = {
     searchPh:'🔍 Search restaurants / dishes…',
     menuSearchPh:'🔍 Search…',
     lblCountry:'Cuisine', lblType:'Type',
+    cuisineAll:'All',
     sortDef:'Default', sortRating:'Rating ↓ High to Low', sortAsc:'Cheapest ↑ Low to High', sortDesc:'Price ↓ High to Low',
     back:'Back to list', menuTitle:'Menu',
     viewMenu:'View Menu →', branchLabel:'branches',
@@ -335,13 +341,14 @@ function renderStars(score, max=5){
 /* ========== 篩選 chips ========== */
 function renderFilterChips(){
   const t=I18N[curLang];
-  // 國家
+  const allLabel=L('filterAll');
+  // 菜系
   document.getElementById('countryFilters').innerHTML =
-    `<span class="chip active" data-cat="all" data-group="country">${L('sortDef').includes('Default')?'All':curLang==='en'?'All':'全部'}</span>` +
+    `<span class="chip active" data-cat="all" data-group="country">${allLabel}</span>` +
     CATEGORIES.countries.map(c=>`<span class="chip" data-cat="${c.key}" data-group="country">${T(c.label)}</span>`).join('');
   // 類型
   document.getElementById('typeFilters').innerHTML =
-    `<span class="chip active" data-cat="all" data-group="type">${curLang==='en'?'All':'全部'}</span>` +
+    `<span class="chip active" data-cat="all" data-group="type">${allLabel}</span>` +
     CATEGORIES.types.map(c=>`<span class="chip" data-cat="${c.key}" data-group="type">${T(c.label)}</span>`).join('');
 }
 

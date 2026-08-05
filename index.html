@@ -12,17 +12,32 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang HK","Microsoft JhengHei",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang HK","PingFang SC","Microsoft JhengHei","Microsoft YaHei",sans-serif;
     background:var(--bg); color:var(--txt); line-height:1.6; padding-bottom:60px;
   }
   /* Header */
   header{
     background:linear-gradient(135deg,#1a1d24 0%,#2a1810 100%);
     border-bottom:1px solid var(--border); padding:28px 20px 24px; text-align:center;
+    position:relative;
   }
   header h1{font-size:1.8rem; letter-spacing:.5px;}
   header h1 span{color:var(--accent);}
   header p{color:var(--muted); font-size:.9rem; margin-top:6px;}
+  /* Lang switcher */
+  .lang-switch{
+    position:absolute; top:18px; right:20px;
+    display:flex; gap:4px; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; padding:3px;
+  }
+  .lang-btn{
+    padding:5px 10px; border:none; background:transparent; color:var(--muted);
+    cursor:pointer; font-size:.78rem; border-radius:7px; font-weight:600;
+    transition:all .15s;
+  }
+  .lang-btn:hover{color:var(--txt);}
+  .lang-btn.active{background:var(--accent); color:#fff;}
+
   .stats{display:flex; gap:18px; justify-content:center; margin-top:14px; flex-wrap:wrap;}
   .stat{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 16px; font-size:.85rem;}
   .stat b{color:var(--accent2);}
@@ -51,11 +66,10 @@
     padding:8px 12px; background:var(--card); border:1px solid var(--border);
     border-radius:10px; color:var(--txt); font-size:.85rem; cursor:pointer;
   }
+  select.sort option{background:var(--card);}
 
   /* Restaurant banner */
-  .resto{
-    max-width:980px; margin:22px auto 0; padding:0 20px;
-  }
+  .resto{max-width:980px; margin:22px auto 0; padding:0 20px;}
   .resto-card{
     background:linear-gradient(135deg,var(--card) 0%, var(--card2) 100%);
     border:1px solid var(--border); border-radius:16px; overflow:hidden;
@@ -103,34 +117,43 @@
     .resto-name{font-size:1.3rem;}
     .grid{grid-template-columns:1fr 1fr; gap:10px;}
     .item{padding:14px;}
+    .lang-switch{position:static; justify-content:center; margin-bottom:10px; display:inline-flex;}
+    .lang-wrap{display:flex; justify-content:center; margin-bottom:14px;}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🍽️ 餐廳 <span>Menu 匯集</span></h1>
-  <p>睇完 menu 先決定去唔去 🥩</p>
+  <div class="lang-wrap" style="margin-bottom:10px;">
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="zh-HK">繁中</button>
+      <button class="lang-btn" data-lang="zh-CN">简中</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+  <h1 data-i18n="title">🍽️ 餐廳 <span>Menu 匯集</span></h1>
+  <p data-i18n="subtitle">睇完 menu 先決定去唔去 🥩</p>
   <div class="stats">
-    <div class="stat">餐廳：<b id="rCount">1</b></div>
-    <div class="stat">菜式：<b id="dCount">0</b></div>
-    <div class="stat">最平：<b id="minP">—</b></div>
+    <div class="stat"><span data-i18n="statResto">餐廳：</span><b id="rCount">1</b></div>
+    <div class="stat"><span data-i18n="statDish">菜式：</span><b id="dCount">0</b></div>
+    <div class="stat"><span data-i18n="statMin">最平：</span><b id="minP">—</b></div>
   </div>
 </header>
 
 <div class="controls">
-  <input type="text" class="search" id="search" placeholder="🔍 搜尋菜式 / 價錢…">
+  <input type="text" class="search" id="search" data-i18n-ph="searchPh" placeholder="🔍 搜尋菜式 / 價錢…">
   <div class="filters" id="filters">
-    <span class="chip active" data-cat="all">全部</span>
-    <span class="chip" data-cat="set">🍱 套餐</span>
-    <span class="chip" data-cat="beef">🥩 牛</span>
-    <span class="chip" data-cat="pork">🥓 豬</span>
-    <span class="chip" data-cat="chicken">🍗 雞</span>
+    <span class="chip active" data-cat="all" data-i18n="catAll">全部</span>
+    <span class="chip" data-cat="set" data-i18n="catSet">🍱 套餐</span>
+    <span class="chip" data-cat="beef" data-i18n="catBeef">🥩 牛</span>
+    <span class="chip" data-cat="pork" data-i18n="catPork">🥓 豬</span>
+    <span class="chip" data-cat="chicken" data-i18n="catChicken">🍗 雞</span>
   </div>
   <select class="sort" id="sort">
-    <option value="default">預設排序</option>
-    <option value="asc">價錢 ↑ 低至高</option>
-    <option value="desc">價錢 ↓ 高至低</option>
+    <option value="default" data-i18n="sortDef">預設排序</option>
+    <option value="asc" data-i18n="sortAsc">價錢 ↑ 低至高</option>
+    <option value="desc" data-i18n="sortDesc">價錢 ↓ 高至低</option>
   </select>
 </div>
 
@@ -138,69 +161,162 @@
 <div class="resto">
   <div class="resto-card">
     <div class="resto-head">
-      <div class="resto-name">燒肉LIKE <span class="tag">YAKINIKU LIKE</span></div>
+      <div class="resto-name"><span data-i18n="r1Name">燒肉LIKE</span> <span class="tag">YAKINIKU LIKE</span></div>
       <div class="resto-meta">
-        <span>🍱 菜式：<b>日式一人燒肉</b></span>
-        <span>📍 地區：<b>香港多區</b></span>
-        <span>⭐ <b>人氣連鎖</b></span>
+        <span><span data-i18n="lblCuisine">菜式：</span><b data-i18n="r1Cuisine">日式一人燒肉</b></span>
+        <span><span data-i18n="lblArea">地區：</span><b data-i18n="r1Area">香港多區</b></span>
+        <span>⭐ <b data-i18n="r1Rating">人氣連鎖</b></span>
       </div>
       <div class="resto-feat">
-        <span class="feat">👤 一人前座位</span>
-        <span class="feat">🚫 無煙烤爐</span>
-        <span class="feat">📱 QR Code 落單</span>
-        <span class="feat">⚡ 出餐快</span>
-        <span class="feat">💰 平價</span>
+        <span class="feat" data-i18n="r1F1">👤 一人前座位</span>
+        <span class="feat" data-i18n="r1F2">🚫 無煙烤爐</span>
+        <span class="feat" data-i18n="r1F3">📱 QR Code 落單</span>
+        <span class="feat" data-i18n="r1F4">⚡ 出餐快</span>
+        <span class="feat" data-i18n="r1F5">💰 平價</span>
       </div>
     </div>
     <div class="resto-branches">
-      🏬 <b>分店：</b>
+      🏬 <b data-i18n="lblBranches">分店：</b>
       <span>旺角 MOKO</span>·
       <span>銅鑼灣</span>·
       <span>尖沙咀 The Wai</span>·
-      <span>（及全港其他分店）</span>
+      <span data-i18n="r1BranchMore">（及全港其他分店）</span>
     </div>
   </div>
 </div>
 
 <!-- Menu -->
 <div class="menu-wrap">
-  <div class="menu-title">🥩 菜單 <span class="cnt" id="cnt"></span></div>
+  <div class="menu-title">🥩 <span data-i18n="menuTitle">菜單</span> <span class="cnt" id="cnt"></span></div>
   <div class="grid" id="grid"></div>
 </div>
 
 <footer>
-  資料僅供參考，實際以餐廳公佈為準 · 更新日期 2026-08-05<br>
-  來源：<a href="https://www.openrice.com/en/hongkong/menu/807194/takeaway" target="_blank">OpenRice</a> ·
+  <span data-i18n="footRef">資料僅供參考，實際以餐廳公佈為準</span> · <span data-i18n="footUpdated">更新日期</span> 2026-08-05<br>
+  <span data-i18n="footSource">來源</span>：<a href="https://www.openrice.com/en/hongkong/menu/807194/takeaway" target="_blank">OpenRice</a> ·
   <a href="https://www.facebook.com/yakinikulikehk/" target="_blank">燒肉LIKE FB</a>
 </footer>
 
 <script>
-const dishes = [
-  {n:"LIKE 牛肉溫泉蛋飯套餐", en:"LIKE Beef & Onsen Egg Rice Set (200g)", p:38, was:67, cat:"set", note:"🔥 超值優惠價"},
-  {n:"牛五花套餐", en:"Karubi Beef Set (100g)", p:48, was:64, cat:"set", note:"🔥 優惠價"},
-  {n:"豬五花腩 & 雞腿肉套餐", en:"Pork Belly & Chicken Thigh Set (150g)", p:48, cat:"set", note:"🔥 雙拼優惠"},
-  {n:"NEXT 牛五花套餐", en:"NEXT Karubi Beef Set (100g)", p:78, cat:"set"},
-  {n:"NEXT 橫膈膜肉套餐", en:"NEXT Harami Set (100g)", p:78, cat:"set"},
-  {n:"認證安格斯肩肉 & 牛五花套餐", en:"Cert. Angus Shoulder & Karubi Set (250g)", p:128, cat:"set", note:"🎊 連飯、湯、前菜"},
-  {n:"認證安格斯牛五花", en:"Certified Angus Beef® Premium Karubi", p:112, cat:"beef", note:"⭐ 招牌"},
-  {n:"橫膈膜肉", en:"Harami", p:120, cat:"beef", note:"⭐ 招牌"},
-  {n:"豬五花", en:"Pork Belly", p:30, cat:"pork"},
-  {n:"炭燒雞", en:"Sumiyaki Chicken", p:32, cat:"chicken"},
-  {n:"黑安格斯漢堡排", en:"Black Angus Burger Steak (1pc)", p:40, cat:"beef"},
-];
+/* ========== 多語言資料 ========== */
+const I18N = {
+  "zh-HK": {
+    title:'🍽️ 餐廳 <span>Menu 匯集</span>',
+    subtitle:'睇完 menu 先決定去唔去 🥩',
+    statResto:'餐廳：', statDish:'菜式：', statMin:'最平：',
+    searchPh:'🔍 搜尋菜式 / 價錢…',
+    catAll:'全部', catSet:'🍱 套餐', catBeef:'🥩 牛', catPork:'🥓 豬', catChicken:'🍗 雞',
+    sortDef:'預設排序', sortAsc:'價錢 ↑ 低至高', sortDesc:'價錢 ↓ 高至低',
+    r1Name:'燒肉LIKE', r1Cuisine:'日式一人燒肉', r1Area:'香港多區', r1Rating:'人氣連鎖',
+    r1F1:'👤 一人前座位', r1F2:'🚫 無煙烤爐', r1F3:'📱 QR Code 落單', r1F4:'⚡ 出餐快', r1F5:'💰 平價',
+    lblCuisine:'菜式：', lblArea:'地區：', lblBranches:'分店：', r1BranchMore:'（及全港其他分店）',
+    menuTitle:'菜單',
+    footRef:'資料僅供參考，實際以餐廳公佈為準', footUpdated:'更新日期', footSource:'來源',
+    cnt:'（顯示 {x} / {y}）', empty:'🙈 搵唔到符合嘅菜式',
+    catLabel:{set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 豬',chicken:'🍗 雞'},
+    dishes:[
+      {n:'LIKE 牛肉溫泉蛋飯套餐', en:'LIKE Beef & Onsen Egg Rice Set (200g)', p:38, was:67, cat:'set', note:'🔥 超值優惠價'},
+      {n:'牛五花套餐', en:'Karubi Beef Set (100g)', p:48, was:64, cat:'set', note:'🔥 優惠價'},
+      {n:'豬五花腩 & 雞腿肉套餐', en:'Pork Belly & Chicken Thigh Set (150g)', p:48, cat:'set', note:'🔥 雙拼優惠'},
+      {n:'NEXT 牛五花套餐', en:'NEXT Karubi Beef Set (100g)', p:78, cat:'set'},
+      {n:'NEXT 橫膈膜肉套餐', en:'NEXT Harami Set (100g)', p:78, cat:'set'},
+      {n:'認證安格斯肩肉 & 牛五花套餐', en:'Cert. Angus Shoulder & Karubi Set (250g)', p:128, cat:'set', note:'🎊 連飯、湯、前菜'},
+      {n:'認證安格斯牛五花', en:'Certified Angus Beef® Premium Karubi', p:112, cat:'beef', note:'⭐ 招牌'},
+      {n:'橫膈膜肉', en:'Harami', p:120, cat:'beef', note:'⭐ 招牌'},
+      {n:'豬五花', en:'Pork Belly', p:30, cat:'pork'},
+      {n:'炭燒雞', en:'Sumiyaki Chicken', p:32, cat:'chicken'},
+      {n:'黑安格斯漢堡排', en:'Black Angus Burger Steak (1pc)', p:40, cat:'beef'},
+    ]
+  },
+  "zh-CN": {
+    title:'🍽️ 餐厅 <span>菜单汇集</span>',
+    subtitle:'看完菜单先决定去不去 🥩',
+    statResto:'餐厅：', statDish:'菜品：', statMin:'最便宜：',
+    searchPh:'🔍 搜索菜品 / 价格…',
+    catAll:'全部', catSet:'🍱 套餐', catBeef:'🥩 牛', catPork:'🥓 猪', catChicken:'🍗 鸡',
+    sortDef:'默认排序', sortAsc:'价格 ↑ 低到高', sortDesc:'价格 ↓ 高到低',
+    r1Name:'烧肉LIKE', r1Cuisine:'日式一人烧肉', r1Area:'香港多区', r1Rating:'人气连锁',
+    r1F1:'👤 一人前座位', r1F2:'🚫 无烟烤炉', r1F3:'📱 扫码点单', r1F4:'⚡ 出餐快', r1F5:'💰 平价',
+    lblCuisine:'菜式：', lblArea:'地区：', lblBranches:'分店：', r1BranchMore:'（及全港其他分店）',
+    menuTitle:'菜单',
+    footRef:'资料仅供参考，实际以餐厅公布为准', footUpdated:'更新日期', footSource:'来源',
+    cnt:'（显示 {x} / {y}）', empty:'🙈 找不到符合条件的菜品',
+    catLabel:{set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 猪',chicken:'🍗 鸡'},
+    dishes:[
+      {n:'LIKE 牛肉温泉蛋饭套餐', en:'LIKE Beef & Onsen Egg Rice Set (200g)', p:38, was:67, cat:'set', note:'🔥 超值优惠价'},
+      {n:'牛五花套餐', en:'Karubi Beef Set (100g)', p:48, was:64, cat:'set', note:'🔥 优惠价'},
+      {n:'猪五花肉 & 鸡腿肉套餐', en:'Pork Belly & Chicken Thigh Set (150g)', p:48, cat:'set', note:'🔥 双拼优惠'},
+      {n:'NEXT 牛五花套餐', en:'NEXT Karubi Beef Set (100g)', p:78, cat:'set'},
+      {n:'NEXT 横膈膜肉套餐', en:'NEXT Harami Set (100g)', p:78, cat:'set'},
+      {n:'认证安格斯肩肉 & 牛五花套餐', en:'Cert. Angus Shoulder & Karubi Set (250g)', p:128, cat:'set', note:'🎊 含饭、汤、前菜'},
+      {n:'认证安格斯牛五花', en:'Certified Angus Beef® Premium Karubi', p:112, cat:'beef', note:'⭐ 招牌'},
+      {n:'横膈膜肉', en:'Harami', p:120, cat:'beef', note:'⭐ 招牌'},
+      {n:'猪五花', en:'Pork Belly', p:30, cat:'pork'},
+      {n:'炭烧鸡', en:'Sumiyaki Chicken', p:32, cat:'chicken'},
+      {n:'黑安格斯汉堡排', en:'Black Angus Burger Steak (1pc)', p:40, cat:'beef'},
+    ]
+  },
+  "en": {
+    title:'🍽️ Restaurant <span>Menu Hub</span>',
+    subtitle:'Browse menus before you decide where to go 🥩',
+    statResto:'Restaurants: ', statDish:'Dishes: ', statMin:'Cheapest: ',
+    searchPh:'🔍 Search dishes / prices…',
+    catAll:'All', catSet:'🍱 Sets', catBeef:'🥩 Beef', catPork:'🥓 Pork', catChicken:'🍗 Chicken',
+    sortDef:'Default order', sortAsc:'Price ↑ Low to High', sortDesc:'Price ↓ High to Low',
+    r1Name:'Yakiniku LIKE', r1Cuisine:'Japanese Solo Yakiniku', r1Area:'Multiple areas, HK', r1Rating:'Popular Chain',
+    r1F1:'👤 Solo counter seats', r1F2:'🚫 Smokeless grill', r1F3:'📱 QR ordering', r1F4:'⚡ Fast service', r1F5:'💰 Budget-friendly',
+    lblCuisine:'Cuisine: ', lblArea:'Area: ', lblBranches:'Branches: ', r1BranchMore:'(and other HK branches)',
+    menuTitle:'Menu',
+    footRef:'For reference only — actual items subject to restaurant', footUpdated:'Updated', footSource:'Source',
+    cnt:'(showing {x} / {y})', empty:'🙈 No dishes match your search',
+    catLabel:{set:'🍱 Set',beef:'🥩 Beef',pork:'🥓 Pork',chicken:'🍗 Chicken'},
+    dishes:[
+      {n:'LIKE Beef & Onsen Egg Rice Set', en:'LIKE 牛肉溫泉蛋飯套餐 (200g)', p:38, was:67, cat:'set', note:'🔥 Special offer'},
+      {n:'Karubi Beef Set', en:'牛五花套餐 (100g)', p:48, was:64, cat:'set', note:'🔥 Offer price'},
+      {n:'Pork Belly & Chicken Thigh Set', en:'豬五花腩 & 雞腿肉套餐 (150g)', p:48, cat:'set', note:'🔥 Duo combo'},
+      {n:'NEXT Karubi Beef Set', en:'NEXT 牛五花套餐 (100g)', p:78, cat:'set'},
+      {n:'NEXT Harami Set', en:'NEXT 橫膈膜肉套餐 (100g)', p:78, cat:'set'},
+      {n:'Cert. Angus Shoulder & Karubi Set', en:'認證安格斯肩肉 & 牛五花套餐 (250g)', p:128, cat:'set', note:'🎊 w/ rice, soup, side'},
+      {n:'Certified Angus Beef® Premium Karubi', en:'認證安格斯牛五花', p:112, cat:'beef', note:'⭐ Signature'},
+      {n:'Harami (Skirt Steak)', en:'橫膈膜肉', p:120, cat:'beef', note:'⭐ Signature'},
+      {n:'Pork Belly', en:'豬五花', p:30, cat:'pork'},
+      {n:'Sumiyaki Chicken', en:'炭燒雞', p:32, cat:'chicken'},
+      {n:'Black Angus Burger Steak (1pc)', en:'黑安格斯漢堡排', p:40, cat:'beef'},
+    ]
+  }
+};
 
+let curLang='zh-HK';
+
+function applyLang(lang){
+  curLang=lang;
+  const t=I18N[lang];
+  document.documentElement.lang=lang;
+  // text
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]) el.innerHTML=t[k];
+  });
+  // placeholder
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-ph');
+    if(t[k]) el.placeholder=t[k];
+  });
+  // lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+  render();
+}
+
+/* ========== 渲染 ========== */
 const grid=document.getElementById('grid');
 const search=document.getElementById('search');
 const filters=document.getElementById('filters');
 const sortSel=document.getElementById('sort');
 let curCat='all';
 
-function catLabel(c){
-  return {set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 豬',chicken:'🍗 雞'}[c]||c;
-}
-
 function render(){
-  let list=dishes.slice();
+  const t=I18N[curLang];
+  let list=t.dishes.slice();
   const q=search.value.trim().toLowerCase();
   if(q){
     list=list.filter(d=>
@@ -214,10 +330,10 @@ function render(){
   if(sv==='asc') list.sort((a,b)=>a.p-b.p);
   if(sv==='desc') list.sort((a,b)=>b.p-a.p);
 
-  document.getElementById('cnt').textContent=`（顯示 ${list.length} / ${dishes.length}）`;
+  document.getElementById('cnt').textContent=t.cnt.replace('{x}',list.length).replace('{y}',t.dishes.length);
 
   if(list.length===0){
-    grid.innerHTML='<div class="empty" style="grid-column:1/-1">🙈 搵唔到符合嘅菜式</div>';
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1">'+t.empty+'</div>';
     return;
   }
   grid.innerHTML=list.map(d=>`
@@ -229,12 +345,13 @@ function render(){
         </div>
         <div class="item-price">$${d.p}${d.was?`<span class="was">$${d.was}</span>`:''}</div>
       </div>
-      <span class="item-cat cat-${d.cat}">${catLabel(d.cat)}</span>
+      <span class="item-cat cat-${d.cat}">${t.catLabel[d.cat]}</span>
       ${d.note?`<div class="item-note">${d.note}</div>`:''}
     </div>
   `).join('');
 }
 
+/* ========== 事件 ========== */
 search.addEventListener('input',render);
 sortSel.addEventListener('change',render);
 filters.addEventListener('click',e=>{
@@ -245,12 +362,15 @@ filters.addEventListener('click',e=>{
     render();
   }
 });
+document.querySelectorAll('.lang-btn').forEach(b=>{
+  b.addEventListener('click',()=>applyLang(b.dataset.lang));
+});
 
-// stats
-document.getElementById('dCount').textContent=dishes.length;
-document.getElementById('minP').textContent='$'+Math.min(...dishes.map(d=>d.p));
-
-render();
+/* ========== 初始化 ========== */
+const firstDish=I18N[curLang].dishes;
+document.getElementById('dCount').textContent=firstDish.length;
+document.getElementById('minP').textContent='$'+Math.min(...firstDish.map(d=>d.p));
+applyLang('zh-HK');
 </script>
 </body>
 </html>

@@ -97,6 +97,54 @@
   .stars .off{color:var(--border);}
   .rating-cnt{font-size:.75rem; color:var(--muted); margin-top:4px;}
 
+  /* 分店 Accordion */
+  .branches-acc{padding:0 26px 16px;}
+  .branches-head{
+    display:flex; align-items:center; gap:8px; font-size:1rem; font-weight:600;
+    color:var(--txt); padding:12px 0 10px;
+  }
+  .branches-head .cnt-badge{
+    background:var(--accent); color:#fff; font-size:.72rem; font-weight:700;
+    padding:2px 9px; border-radius:10px;
+  }
+  .branch-item{
+    border:1px solid var(--border); border-radius:10px; margin-bottom:8px;
+    overflow:hidden; background:var(--card2); transition:border-color .15s;
+  }
+  .branch-item:hover{border-color:var(--accent2);}
+  .branch-summary{
+    display:flex; align-items:center; gap:10px; width:100%;
+    padding:13px 16px; cursor:pointer; user-select:none; list-style:none;
+  }
+  .branch-summary::-webkit-details-marker{display:none;}
+  .branch-summary .b-icon{font-size:1.1rem;}
+  .branch-summary .b-name{flex:1; font-weight:600; font-size:.95rem; text-align:left;}
+  .branch-summary .b-area{color:var(--muted); font-size:.8rem;}
+  .branch-summary .b-arrow{
+    color:var(--muted); transition:transform .25s; font-size:.8rem;
+  }
+  details[open] .b-arrow{transform:rotate(90deg);}
+  .branch-body{
+    padding:0 16px 14px 42px; border-top:1px solid var(--border);
+    animation:fadeSlide .25s ease;
+  }
+  @keyframes fadeSlide{from{opacity:0; transform:translateY(-4px);}to{opacity:1; transform:translateY(0);}}
+  .branch-row{
+    display:flex; gap:8px; padding:8px 0; font-size:.85rem;
+    border-bottom:1px dashed var(--border);
+  }
+  .branch-row:last-child{border-bottom:none;}
+  .branch-row .lbl{color:var(--muted); min-width:64px; flex-shrink:0;}
+  .branch-row .val{color:var(--txt); flex:1; word-break:break-word;}
+  .branch-actions{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
+  .branch-btn{
+    display:inline-flex; align-items:center; gap:5px; font-size:.78rem;
+    padding:6px 12px; border-radius:8px; border:1px solid var(--border);
+    background:var(--card); color:var(--accent2); text-decoration:none;
+    transition:all .15s;
+  }
+  .branch-btn:hover{background:var(--accent); border-color:var(--accent); color:#fff;}
+
   /* Menu grid */
   .menu-wrap{max-width:980px; margin:20px auto 0; padding:0 20px;}
   .menu-title{font-size:1.1rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
@@ -203,12 +251,12 @@
         <span class="feat" data-i18n="r1F5">💰 平價</span>
       </div>
     </div>
-    <div class="resto-branches">
-      🏬 <b data-i18n="lblBranches">分店：</b>
-      <span>旺角 MOKO</span>·
-      <span>銅鑼灣</span>·
-      <span>尖沙咀 The Wai</span>·
-      <span data-i18n="r1BranchMore">（及全港其他分店）</span>
+    <div class="branches-acc">
+      <div class="branches-head">
+        🏬 <span data-i18n="lblBranches">分店</span>
+        <span class="cnt-badge" id="branchCnt">0</span>
+      </div>
+      <div id="branchList"></div>
     </div>
   </div>
 </div>
@@ -239,11 +287,18 @@ const I18N = {
     r1Name:'燒肉LIKE', r1Cuisine:'日式一人燒肉', r1Area:'香港多區',
     r1ReviewCnt:'12 個評論', r1QuickLabel:'網民食評', r1QuickDesc:'快捷抵食之選',
     r1F1:'👤 一人前座位', r1F2:'🚫 無煙烤爐', r1F3:'📱 QR Code 落單', r1F4:'⚡ 出餐快', r1F5:'💰 平價',
-    lblCuisine:'菜式：', lblArea:'地區：', lblBranches:'分店：', r1BranchMore:'（及全港其他分店）',
+    lblCuisine:'菜式：', lblArea:'地區：', lblBranches:'分店',
+    lblAddr:'地址', lblHours:'營業時間', lblPhone:'電話', lblPrice:'人均', lblLastOrder:'最後落單',
+    btnMap:'📍 Google 地圖', btnCall:'📞 致電',
     menuTitle:'菜單',
     footRef:'資料僅供參考，實際以餐廳公佈為準', footUpdated:'更新日期', footSource:'來源',
     cnt:'（顯示 {x} / {y}）', empty:'🙈 搵唔到符合嘅菜式',
     catLabel:{set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 豬',chicken:'🍗 雞'},
+    branches:[
+      {name:'旺角 MOKO 新世紀廣場', area:'旺角', addr:'太子道西193號 MOKO 新世紀廣場 3樓 301-302號舖', hours:'每日 11:30–22:30', lastOrder:'21:30', phone:'2152 9433', price:'$80–150', lat:22.3217, lng:114.1726},
+      {name:'銅鑼灣（英皇鐘錶珠寶中心）', area:'銅鑼灣', addr:'羅素街 英皇鐘錶珠寶中心', hours:'每日 11:30–22:30', phone:'—', price:'$101–200', lat:22.2819, lng:114.1855},
+      {name:'尖沙咀 The Wai', area:'尖沙咀', addr:'彌敦道132號 美麗華廣場 The Wai', hours:'每日 11:30–22:30', phone:'—', price:'$80–150', lat:22.3001, lng:114.1737},
+    ],
     dishes:[
       {n:'LIKE 牛肉溫泉蛋飯套餐', en:'LIKE Beef & Onsen Egg Rice Set (200g)', p:38, was:67, cat:'set', note:'🔥 超值優惠價'},
       {n:'牛五花套餐', en:'Karubi Beef Set (100g)', p:48, was:64, cat:'set', note:'🔥 優惠價'},
@@ -268,11 +323,18 @@ const I18N = {
     r1Name:'烧肉LIKE', r1Cuisine:'日式一人烧肉', r1Area:'香港多区',
     r1ReviewCnt:'12 条评论', r1QuickLabel:'网友食评', r1QuickDesc:'快捷实惠之选',
     r1F1:'👤 一人前座位', r1F2:'🚫 无烟烤炉', r1F3:'📱 扫码点单', r1F4:'⚡ 出餐快', r1F5:'💰 平价',
-    lblCuisine:'菜式：', lblArea:'地区：', lblBranches:'分店：', r1BranchMore:'（及全港其他分店）',
+    lblCuisine:'菜式：', lblArea:'地区：', lblBranches:'分店',
+    lblAddr:'地址', lblHours:'营业时间', lblPhone:'电话', lblPrice:'人均', lblLastOrder:'最后下单',
+    btnMap:'📍 谷歌地图', btnCall:'📞 致电',
     menuTitle:'菜单',
     footRef:'资料仅供参考，实际以餐厅公布为准', footUpdated:'更新日期', footSource:'来源',
     cnt:'（显示 {x} / {y}）', empty:'🙈 找不到符合条件的菜品',
     catLabel:{set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 猪',chicken:'🍗 鸡'},
+    branches:[
+      {name:'旺角 MOKO 新世纪广场', area:'旺角', addr:'太子道西193号 MOKO 新世纪广场 3楼 301-302号铺', hours:'每日 11:30–22:30', lastOrder:'21:30', phone:'2152 9433', price:'$80–150', lat:22.3217, lng:114.1726},
+      {name:'铜锣湾（英皇钟表珠宝中心）', area:'铜锣湾', addr:'罗素街 英皇钟表珠宝中心', hours:'每日 11:30–22:30', phone:'—', price:'$101–200', lat:22.2819, lng:114.1855},
+      {name:'尖沙咀 The Wai', area:'尖沙咀', addr:'弥敦道132号 美丽华广场 The Wai', hours:'每日 11:30–22:30', phone:'—', price:'$80–150', lat:22.3001, lng:114.1737},
+    ],
     dishes:[
       {n:'LIKE 牛肉温泉蛋饭套餐', en:'LIKE Beef & Onsen Egg Rice Set (200g)', p:38, was:67, cat:'set', note:'🔥 超值优惠价'},
       {n:'牛五花套餐', en:'Karubi Beef Set (100g)', p:48, was:64, cat:'set', note:'🔥 优惠价'},
@@ -297,11 +359,18 @@ const I18N = {
     r1Name:'Yakiniku LIKE', r1Cuisine:'Japanese Solo Yakiniku', r1Area:'Multiple areas, HK',
     r1ReviewCnt:'12 reviews', r1QuickLabel:'Foodie Review', r1QuickDesc:'Quick & wallet-friendly pick',
     r1F1:'👤 Solo counter seats', r1F2:'🚫 Smokeless grill', r1F3:'📱 QR ordering', r1F4:'⚡ Fast service', r1F5:'💰 Budget-friendly',
-    lblCuisine:'Cuisine: ', lblArea:'Area: ', lblBranches:'Branches: ', r1BranchMore:'(and other HK branches)',
+    lblCuisine:'Cuisine: ', lblArea:'Area: ', lblBranches:'Branches',
+    lblAddr:'Address', lblHours:'Hours', lblPhone:'Phone', lblPrice:'Avg spend', lblLastOrder:'Last order',
+    btnMap:'📍 Google Maps', btnCall:'📞 Call',
     menuTitle:'Menu',
     footRef:'For reference only — actual items subject to restaurant', footUpdated:'Updated', footSource:'Source',
     cnt:'(showing {x} / {y})', empty:'🙈 No dishes match your search',
     catLabel:{set:'🍱 Set',beef:'🥩 Beef',pork:'🥓 Pork',chicken:'🍗 Chicken'},
+    branches:[
+      {name:'Mong Kok MOKO', area:'Mong Kok', addr:'Shop 301-302, L3, MOKO, 193 Prince Edward Rd West', hours:'Daily 11:30–22:30', lastOrder:'21:30', phone:'2152 9433', price:'$80–150', lat:22.3217, lng:114.1726},
+      {name:'Causeway Bay (Emperor Watch & Jewellery Centre)', area:'Causeway Bay', addr:'Russell Street, Emperor Watch & Jewellery Centre', hours:'Daily 11:30–22:30', phone:'—', price:'$101–200', lat:22.2819, lng:114.1855},
+      {name:'Tsim Sha Tsui The Wai', area:'TST', addr:'The Wai, Miramar Square, 132 Nathan Rd', hours:'Daily 11:30–22:30', phone:'—', price:'$80–150', lat:22.3001, lng:114.1737},
+    ],
     dishes:[
       {n:'LIKE Beef & Onsen Egg Rice Set', en:'LIKE 牛肉溫泉蛋飯套餐 (200g)', p:38, was:67, cat:'set', note:'🔥 Special offer'},
       {n:'Karubi Beef Set', en:'牛五花套餐 (100g)', p:48, was:64, cat:'set', note:'🔥 Offer price'},
@@ -332,6 +401,37 @@ function renderStars(elId, score, max=5){
   if(el) el.innerHTML=html;
 }
 
+/* 渲染分店 accordion */
+function renderBranches(){
+  const t=I18N[curLang];
+  const list=document.getElementById('branchList');
+  const cnt=document.getElementById('branchCnt');
+  if(!list) return;
+  cnt.textContent=t.branches.length;
+  list.innerHTML=t.branches.map((b,i)=>{
+    const mapUrl=`https://www.google.com/maps/search/?api=1&query=${b.lat},${b.lng}`;
+    const callUrl=b.phone&&b.phone!=='—' ? `tel:${b.phone.replace(/\s/g,'')}` : null;
+    return `
+    <details class="branch-item" ${i===0?'open':''}>
+      <summary class="branch-summary">
+        <span class="b-icon">🏪</span>
+        <span class="b-name">${b.name}<br><span class="b-area">${b.area}</span></span>
+        <span class="b-arrow">▶</span>
+      </summary>
+      <div class="branch-body">
+        <div class="branch-row"><span class="lbl">${t.lblAddr}</span><span class="val">${b.addr}</span></div>
+        <div class="branch-row"><span class="lbl">${t.lblHours}</span><span class="val">${b.hours}${b.lastOrder?` <span style="color:var(--muted)">(${t.lblLastOrder} ${b.lastOrder})</span>`:''}</span></div>
+        <div class="branch-row"><span class="lbl">${t.lblPhone}</span><span class="val">${b.phone}</span></div>
+        <div class="branch-row"><span class="lbl">${t.lblPrice}</span><span class="val">${b.price}</span></div>
+        <div class="branch-actions">
+          <a class="branch-btn" href="${mapUrl}" target="_blank" rel="noopener">${t.btnMap}</a>
+          ${callUrl?`<a class="branch-btn" href="${callUrl}">${t.btnCall}</a>`:''}
+        </div>
+      </div>
+    </details>`;
+  }).join('');
+}
+
 function applyLang(lang){
   curLang=lang;
   const t=I18N[lang];
@@ -351,6 +451,8 @@ function applyLang(lang){
   // 渲染星星
   renderStars('taStars', 3.9, 5);
   renderStars('igStars', 8, 10);
+  // 渲染分店
+  renderBranches();
   render();
 }
 

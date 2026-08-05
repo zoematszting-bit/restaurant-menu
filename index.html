@@ -561,8 +561,13 @@ document.addEventListener('click',e=>{
 document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
 
 // hash 路由
+function getHashId(){
+  // 只拎 # 同 ? 之間嘅部分，忽略 query string
+  const h=location.hash.slice(1);
+  return h.split('?')[0].split('&')[0];
+}
 window.addEventListener('hashchange',()=>{
-  const id=location.hash.slice(1);
+  const id=getHashId();
   if(id && RESTAURANTS.some(r=>r.id===id)){
     if(curResto!==id) openRestaurant(id);
   } else if(!id && curResto){
@@ -573,7 +578,7 @@ window.addEventListener('hashchange',()=>{
 /* ========== 初始化 ========== */
 applyLang('zh-HK');
 // 如果有 hash，直接開嗰間
-const initId=location.hash.slice(1);
+const initId=getHashId();
 if(initId && RESTAURANTS.some(r=>r.id===initId)) openRestaurant(initId);
 </script>
 </body>

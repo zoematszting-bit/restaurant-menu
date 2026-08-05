@@ -15,79 +15,111 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang HK","PingFang SC","Microsoft JhengHei","Microsoft YaHei",sans-serif;
     background:var(--bg); color:var(--txt); line-height:1.6; padding-bottom:60px;
   }
-  /* Header */
+  /* ===== Header ===== */
   header{
     background:linear-gradient(135deg,#1a1d24 0%,#2a1810 100%);
     border-bottom:1px solid var(--border); padding:28px 20px 24px; text-align:center;
-    position:relative;
   }
   header h1{font-size:1.8rem; letter-spacing:.5px;}
   header h1 span{color:var(--accent);}
   header p{color:var(--muted); font-size:.9rem; margin-top:6px;}
-  /* Lang switcher */
+  .lang-wrap{display:flex; justify-content:center; margin-bottom:14px;}
   .lang-switch{
-    position:absolute; top:18px; right:20px;
     display:flex; gap:4px; background:var(--card); border:1px solid var(--border);
     border-radius:10px; padding:3px;
   }
   .lang-btn{
-    padding:5px 10px; border:none; background:transparent; color:var(--muted);
-    cursor:pointer; font-size:.78rem; border-radius:7px; font-weight:600;
-    transition:all .15s;
+    padding:5px 12px; border:none; background:transparent; color:var(--muted);
+    cursor:pointer; font-size:.78rem; border-radius:7px; font-weight:600; transition:all .15s;
   }
   .lang-btn:hover{color:var(--txt);}
   .lang-btn.active{background:var(--accent); color:#fff;}
-
   .stats{display:flex; gap:18px; justify-content:center; margin-top:14px; flex-wrap:wrap;}
   .stat{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 16px; font-size:.85rem;}
   .stat b{color:var(--accent2);}
 
-  /* Controls */
+  /* ===== View 切換 ===== */
+  .view.hidden{display:none;}
+
+  /* ===== Sticky 篩選列 ===== */
   .controls{
     position:sticky; top:0; z-index:10; background:rgba(15,17,21,.96); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--border); padding:14px 20px;
-    display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:center;
+    border-bottom:1px solid var(--border); padding:12px 20px;
+    display:flex; flex-direction:column; gap:8px; align-items:center;
   }
   .search{
-    flex:1; min-width:200px; max-width:380px; padding:10px 14px;
+    width:100%; max-width:480px; padding:10px 14px;
     background:var(--card); border:1px solid var(--border); border-radius:10px;
     color:var(--txt); font-size:.95rem;
   }
   .search:focus{outline:none; border-color:var(--accent);}
-  .filters{display:flex; gap:6px; flex-wrap:wrap;}
+  .filter-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center;}
+  .filter-group{display:flex; gap:6px; flex-wrap:wrap; align-items:center;}
+  .filter-label{font-size:.72rem; color:var(--muted); margin-right:2px; text-transform:uppercase; letter-spacing:.5px;}
   .chip{
-    padding:8px 14px; border-radius:20px; border:1px solid var(--border);
-    background:var(--card); color:var(--muted); cursor:pointer; font-size:.82rem;
-    transition:all .15s; user-select:none;
+    padding:6px 12px; border-radius:20px; border:1px solid var(--border);
+    background:var(--card); color:var(--muted); cursor:pointer; font-size:.8rem;
+    transition:all .15s; user-select:none; white-space:nowrap;
   }
   .chip:hover{border-color:var(--accent2); color:var(--txt);}
   .chip.active{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600;}
   select.sort{
-    padding:8px 12px; background:var(--card); border:1px solid var(--border);
-    border-radius:10px; color:var(--txt); font-size:.85rem; cursor:pointer;
+    padding:6px 10px; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; color:var(--txt); font-size:.82rem; cursor:pointer;
   }
   select.sort option{background:var(--card);}
 
-  /* Restaurant banner */
-  .resto{max-width:980px; margin:22px auto 0; padding:0 20px;}
+  /* ===== 餐廳列表卡片 ===== */
+  .list-wrap{max-width:980px; margin:18px auto 0; padding:0 20px;}
+  .list-info{color:var(--muted); font-size:.82rem; margin-bottom:12px;}
+  .card-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;}
   .resto-card{
     background:linear-gradient(135deg,var(--card) 0%, var(--card2) 100%);
-    border:1px solid var(--border); border-radius:16px; overflow:hidden;
+    border:1px solid var(--border); border-radius:16px; padding:20px;
+    cursor:pointer; transition:all .18s; position:relative; overflow:hidden;
   }
-  .resto-head{padding:24px 26px; border-bottom:1px solid var(--border); position:relative;}
-  .resto-head::before{content:""; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,var(--accent),var(--accent2));}
-  .resto-name{font-size:1.6rem; font-weight:700;}
-  .resto-name .tag{display:inline-block; font-size:.7rem; vertical-align:middle; margin-left:10px; background:var(--accent); color:#fff; padding:3px 10px; border-radius:12px; font-weight:600;}
-  .resto-meta{display:flex; gap:18px; margin-top:10px; flex-wrap:wrap; font-size:.85rem; color:var(--muted);}
-  .resto-meta b{color:var(--accent2);}
-  .resto-feat{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
-  .feat{font-size:.78rem; background:var(--card2); border:1px solid var(--border); padding:5px 12px; border-radius:8px; color:var(--muted);}
-  .resto-branches{padding:14px 26px; background:rgba(0,0,0,.2); font-size:.85rem;}
-  .resto-branches b{color:var(--green);}
-  .resto-branches span{display:inline-block; margin:0 8px; color:var(--muted);}
+  .resto-card::before{content:""; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  .resto-card:hover{border-color:var(--accent); transform:translateY(-3px); box-shadow:0 8px 24px rgba(255,107,53,.15);}
+  .card-top{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .card-emoji{font-size:1.8rem;}
+  .card-name{font-size:1.2rem; font-weight:700; flex:1;}
+  .card-cats{display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;}
+  .card-cat{font-size:.72rem; background:var(--card2); border:1px solid var(--border); padding:3px 10px; border-radius:8px; color:var(--muted);}
+  .card-cuisine{color:var(--muted); font-size:.85rem; margin-bottom:12px;}
+  .card-stats{display:flex; gap:16px; margin-bottom:14px; flex-wrap:wrap; font-size:.85rem;}
+  .card-stat{display:flex; align-items:center; gap:4px;}
+  .card-stat b{color:var(--accent2);}
+  .card-cta{
+    display:inline-flex; align-items:center; gap:5px; font-size:.82rem; font-weight:600;
+    color:var(--accent); padding-top:8px; border-top:1px solid var(--border); width:100%;
+    justify-content:flex-end;
+  }
 
-  /* 評分區 */
-  .ratings{display:flex; gap:12px; padding:14px 26px; border-top:1px solid var(--border); flex-wrap:wrap;}
+  /* ===== 詳情頁 ===== */
+  .detail-back{
+    display:inline-flex; align-items:center; gap:6px; cursor:pointer;
+    color:var(--accent); font-size:.88rem; font-weight:600; padding:8px 0;
+    background:none; border:none;
+  }
+  .detail-back:hover{text-decoration:underline;}
+  .detail-head{
+    max-width:980px; margin:16px auto 0; padding:0 20px;
+  }
+  .detail-card{
+    background:linear-gradient(135deg,var(--card) 0%, var(--card2) 100%);
+    border:1px solid var(--border); border-radius:16px; overflow:hidden; position:relative;
+  }
+  .detail-card::before{content:""; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  .detail-top{padding:24px 26px; border-bottom:1px solid var(--border);}
+  .detail-name{display:flex; align-items:center; gap:10px; font-size:1.6rem; font-weight:700;}
+  .detail-name .emoji{font-size:1.8rem;}
+  .detail-cats{display:flex; gap:6px; margin:10px 0; flex-wrap:wrap;}
+  .detail-cuisine{color:var(--muted); font-size:.9rem;}
+  .detail-feat{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
+  .feat{font-size:.78rem; background:var(--card2); border:1px solid var(--border); padding:5px 12px; border-radius:8px; color:var(--muted);}
+
+  /* 評分 */
+  .ratings{display:flex; gap:12px; padding:14px 26px; border-bottom:1px solid var(--border); flex-wrap:wrap;}
   .rating-card{flex:1; min-width:160px; background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 14px;}
   .rating-src{font-size:.72rem; color:var(--muted); margin-bottom:4px; text-transform:uppercase; letter-spacing:.5px;}
   .rating-val{display:flex; align-items:center; gap:8px;}
@@ -97,42 +129,22 @@
   .stars .off{color:var(--border);}
   .rating-cnt{font-size:.75rem; color:var(--muted); margin-top:4px;}
 
-  /* 分店 Accordion */
+  /* 分店 accordion */
   .branches-acc{padding:0 26px 16px;}
-  .branches-head{
-    display:flex; align-items:center; gap:8px; font-size:1rem; font-weight:600;
-    color:var(--txt); padding:12px 0 10px;
-  }
-  .branches-head .cnt-badge{
-    background:var(--accent); color:#fff; font-size:.72rem; font-weight:700;
-    padding:2px 9px; border-radius:10px;
-  }
-  .branch-item{
-    border:1px solid var(--border); border-radius:10px; margin-bottom:8px;
-    overflow:hidden; background:var(--card2); transition:border-color .15s;
-  }
+  .branches-head{display:flex; align-items:center; gap:8px; font-size:1rem; font-weight:600; padding:12px 0 10px;}
+  .branches-head .cnt-badge{background:var(--accent); color:#fff; font-size:.72rem; font-weight:700; padding:2px 9px; border-radius:10px;}
+  .branch-item{border:1px solid var(--border); border-radius:10px; margin-bottom:8px; overflow:hidden; background:var(--card2); transition:border-color .15s;}
   .branch-item:hover{border-color:var(--accent2);}
-  .branch-summary{
-    display:flex; align-items:center; gap:10px; width:100%;
-    padding:13px 16px; cursor:pointer; user-select:none; list-style:none;
-  }
+  .branch-summary{display:flex; align-items:center; gap:10px; width:100%; padding:13px 16px; cursor:pointer; user-select:none; list-style:none;}
   .branch-summary::-webkit-details-marker{display:none;}
   .branch-summary .b-icon{font-size:1.1rem;}
   .branch-summary .b-name{flex:1; font-weight:600; font-size:.95rem; text-align:left;}
   .branch-summary .b-area{color:var(--muted); font-size:.8rem;}
-  .branch-summary .b-arrow{
-    color:var(--muted); transition:transform .25s; font-size:.8rem;
-  }
+  .branch-summary .b-arrow{color:var(--muted); transition:transform .25s; font-size:.8rem;}
   details[open] .b-arrow{transform:rotate(90deg);}
-  .branch-body{
-    padding:0 16px 14px 42px; border-top:1px solid var(--border);
-    animation:fadeSlide .25s ease;
-  }
+  .branch-body{padding:0 16px 14px 42px; border-top:1px solid var(--border); animation:fadeSlide .25s ease;}
   @keyframes fadeSlide{from{opacity:0; transform:translateY(-4px);}to{opacity:1; transform:translateY(0);}}
-  .branch-row{
-    display:flex; gap:8px; padding:8px 0; font-size:.85rem;
-    border-bottom:1px dashed var(--border);
-  }
+  .branch-row{display:flex; gap:8px; padding:8px 0; font-size:.85rem; border-bottom:1px dashed var(--border);}
   .branch-row:last-child{border-bottom:none;}
   .branch-row .lbl{color:var(--muted); min-width:64px; flex-shrink:0;}
   .branch-row .val{color:var(--txt); flex:1; word-break:break-word;}
@@ -140,32 +152,26 @@
   .branch-btn{
     display:inline-flex; align-items:center; gap:5px; font-size:.78rem;
     padding:6px 12px; border-radius:8px; border:1px solid var(--border);
-    background:var(--card); color:var(--accent2); text-decoration:none;
-    transition:all .15s;
+    background:var(--card); color:var(--accent2); text-decoration:none; transition:all .15s;
   }
   .branch-btn:hover{background:var(--accent); border-color:var(--accent); color:#fff;}
 
-  /* Menu grid */
+  /* Menu grid (detail) */
   .menu-wrap{max-width:980px; margin:20px auto 0; padding:0 20px;}
-  .menu-title{font-size:1.1rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+  .menu-title{font-size:1.1rem; margin-bottom:14px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
   .menu-title .cnt{color:var(--muted); font-size:.85rem; font-weight:400;}
+  .menu-controls{display:flex; gap:8px; align-items:center; margin-left:auto; flex-wrap:wrap;}
+  .menu-search{width:160px; padding:6px 10px; background:var(--card); border:1px solid var(--border); border-radius:8px; color:var(--txt); font-size:.82rem;}
+  .menu-search:focus{outline:none; border-color:var(--accent);}
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px;}
-  .item{
-    background:var(--card); border:1px solid var(--border); border-radius:12px;
-    padding:16px 18px; transition:all .18s; cursor:default;
-  }
+  .item{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; transition:all .18s;}
   .item:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,107,53,.12);}
   .item-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
   .item-name{font-weight:600; font-size:1rem;}
   .item-name.en{color:var(--muted); font-size:.78rem; font-weight:400; margin-top:2px;}
   .item-price{color:var(--accent2); font-weight:700; font-size:1.05rem; white-space:nowrap;}
   .item-price .was{color:var(--muted); text-decoration:line-through; font-size:.75rem; font-weight:400; margin-left:4px;}
-  .item-cat{display:inline-block; margin-top:10px; font-size:.72rem; padding:3px 9px; border-radius:6px;}
-  .cat-set{background:rgba(255,107,53,.15); color:var(--accent2);}
-  .cat-beef{background:rgba(248,113,113,.15); color:var(--red);}
-  .cat-pork{background:rgba(255,179,71,.15); color:var(--accent2);}
-  .cat-chicken{background:rgba(52,211,153,.15); color:var(--green);}
-  .item-note{font-size:.8rem; color:var(--muted); margin-top:8px;}
+  .item-tag{display:inline-block; margin-top:10px; font-size:.72rem; padding:3px 9px; border-radius:6px; background:rgba(255,179,71,.15); color:var(--accent2);}
 
   .empty{text-align:center; padding:60px 20px; color:var(--muted);}
   footer{text-align:center; margin-top:40px; color:var(--muted); font-size:.78rem;}
@@ -173,18 +179,18 @@
 
   @media(max-width:600px){
     header h1{font-size:1.4rem;}
-    .resto-name{font-size:1.3rem;}
+    .detail-name{font-size:1.3rem;}
     .grid{grid-template-columns:1fr 1fr; gap:10px;}
     .item{padding:14px;}
-    .lang-switch{position:static; justify-content:center; margin-bottom:10px; display:inline-flex;}
-    .lang-wrap{display:flex; justify-content:center; margin-bottom:14px;}
+    .card-grid{grid-template-columns:1fr;}
+    .menu-search{width:120px;}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="lang-wrap" style="margin-bottom:10px;">
+  <div class="lang-wrap">
     <div class="lang-switch">
       <button class="lang-btn active" data-lang="zh-HK">繁中</button>
       <button class="lang-btn" data-lang="zh-CN">简中</button>
@@ -192,334 +198,383 @@
     </div>
   </div>
   <h1 data-i18n="title">🍽️ 餐廳 <span>Menu 匯集</span></h1>
-  <p data-i18n="subtitle">睇完 menu 先決定去唔去 🥩</p>
+  <p data-i18n="subtitle">一個地方睇齊所有餐廳 menu，唔使周圍搵</p>
   <div class="stats">
-    <div class="stat"><span data-i18n="statResto">餐廳：</span><b id="rCount">1</b></div>
+    <div class="stat"><span data-i18n="statResto">餐廳：</span><b id="rCount">0</b></div>
     <div class="stat"><span data-i18n="statDish">菜式：</span><b id="dCount">0</b></div>
     <div class="stat"><span data-i18n="statMin">最平：</span><b id="minP">—</b></div>
   </div>
 </header>
 
-<div class="controls">
-  <input type="text" class="search" id="search" data-i18n-ph="searchPh" placeholder="🔍 搜尋菜式 / 價錢…">
-  <div class="filters" id="filters">
-    <span class="chip active" data-cat="all" data-i18n="catAll">全部</span>
-    <span class="chip" data-cat="set" data-i18n="catSet">🍱 套餐</span>
-    <span class="chip" data-cat="beef" data-i18n="catBeef">🥩 牛</span>
-    <span class="chip" data-cat="pork" data-i18n="catPork">🥓 豬</span>
-    <span class="chip" data-cat="chicken" data-i18n="catChicken">🍗 雞</span>
+<!-- ========== View A：列表頁 ========== -->
+<div id="listView" class="view">
+  <div class="controls">
+    <input type="text" class="search" id="search" data-i18n-ph="searchPh" placeholder="🔍 搜尋餐廳 / 菜式…">
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label" data-i18n="lblCountry">國家</span>
+        <div id="countryFilters"></div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label" data-i18n="lblType">類型</span>
+        <div id="typeFilters"></div>
+      </div>
+    </div>
+    <select class="sort" id="sort">
+      <option value="default" data-i18n="sortDef">預設排序</option>
+      <option value="rating" data-i18n="sortRating">評分 ↓ 高至低</option>
+      <option value="asc" data-i18n="sortAsc">最平 ↑ 低至高</option>
+    </select>
   </div>
-  <select class="sort" id="sort">
-    <option value="default" data-i18n="sortDef">預設排序</option>
-    <option value="asc" data-i18n="sortAsc">價錢 ↑ 低至高</option>
-    <option value="desc" data-i18n="sortDesc">價錢 ↓ 高至低</option>
-  </select>
-</div>
-
-<!-- 餐廳資訊 -->
-<div class="resto">
-  <div class="resto-card">
-    <div class="resto-head">
-      <div class="resto-name"><span data-i18n="r1Name">燒肉LIKE</span> <span class="tag">YAKINIKU LIKE</span></div>
-      <div class="resto-meta">
-        <span><span data-i18n="lblCuisine">菜式：</span><b data-i18n="r1Cuisine">日式一人燒肉</b></span>
-        <span><span data-i18n="lblArea">地區：</span><b data-i18n="r1Area">香港多區</b></span>
-      </div>
-      <div class="ratings">
-        <div class="rating-card">
-          <div class="rating-src">TripAdvisor</div>
-          <div class="rating-val">
-            <span class="rating-num" id="taNum">3.9<small>/5</small></span>
-            <span class="stars" id="taStars"></span>
-          </div>
-          <div class="rating-cnt" data-i18n="r1ReviewCnt">12 個評論</div>
-        </div>
-        <div class="rating-card">
-          <div class="rating-src" data-i18n="r1QuickLabel">網民食評</div>
-          <div class="rating-val">
-            <span class="rating-num" id="igNum">8<small>/10</small></span>
-            <span class="stars" id="igStars"></span>
-          </div>
-          <div class="rating-cnt" data-i18n="r1QuickDesc">快捷抵食之選</div>
-        </div>
-      </div>
-      <div class="resto-feat">
-        <span class="feat" data-i18n="r1F1">👤 一人前座位</span>
-        <span class="feat" data-i18n="r1F2">🚫 無煙烤爐</span>
-        <span class="feat" data-i18n="r1F3">📱 QR Code 落單</span>
-        <span class="feat" data-i18n="r1F4">⚡ 出餐快</span>
-        <span class="feat" data-i18n="r1F5">💰 平價</span>
-      </div>
-    </div>
-    <div class="branches-acc">
-      <div class="branches-head">
-        🏬 <span data-i18n="lblBranches">分店</span>
-        <span class="cnt-badge" id="branchCnt">0</span>
-      </div>
-      <div id="branchList"></div>
-    </div>
+  <div class="list-wrap">
+    <div class="list-info" id="listInfo"></div>
+    <div class="card-grid" id="cardGrid"></div>
   </div>
 </div>
 
-<!-- Menu -->
-<div class="menu-wrap">
-  <div class="menu-title">🥩 <span data-i18n="menuTitle">菜單</span> <span class="cnt" id="cnt"></span></div>
-  <div class="grid" id="grid"></div>
+<!-- ========== View B：餐廳詳情頁 ========== -->
+<div id="detailView" class="view hidden">
+  <div class="detail-head">
+    <button class="detail-back" id="backBtn">← <span data-i18n="back">返回列表</span></button>
+    <div class="detail-card" id="detailCard"></div>
+  </div>
+  <div class="menu-wrap">
+    <div class="menu-title">
+      🍽️ <span data-i18n="menuTitle">Menu</span> <span class="cnt" id="cnt"></span>
+      <div class="menu-controls">
+        <input type="text" class="menu-search" id="menuSearch" data-i18n-ph="menuSearchPh" placeholder="🔍 搜尋…">
+        <select class="sort" id="menuSort">
+          <option value="default" data-i18n="sortDef">預設</option>
+          <option value="asc" data-i18n="sortAsc">價錢 ↑</option>
+          <option value="desc" data-i18n="sortDesc">價錢 ↓</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
 </div>
 
 <footer>
   <span data-i18n="footRef">資料僅供參考，實際以餐廳公佈為準</span> · <span data-i18n="footUpdated">更新日期</span> 2026-08-05<br>
-  <span data-i18n="footSource">來源</span>：<a href="https://www.openrice.com/en/hongkong/menu/807194/takeaway" target="_blank">OpenRice</a> ·
-  <a href="https://www.tripadvisor.com/Restaurant_Review-g294217-d25572559-Reviews-YAKINIKU_LIKE-Hong_Kong.html" target="_blank">TripAdvisor</a> ·
-  <a href="https://www.facebook.com/yakinikulikehk/" target="_blank">燒肉LIKE FB</a>
+  <span data-i18n="footSource">來源</span>：<a href="https://www.openrice.com" target="_blank">OpenRice</a> ·
+  <a href="https://www.tripadvisor.com" target="_blank">TripAdvisor</a>
 </footer>
 
+<script src="restaurants.js"></script>
 <script>
-/* ========== 多語言資料 ========== */
+/* ========== UI 字串（純 UI，唔含餐廳資料）========== */
 const I18N = {
   "zh-HK": {
     title:'🍽️ 餐廳 <span>Menu 匯集</span>',
-    subtitle:'睇完 menu 先決定去唔去 🥩',
+    subtitle:'一個地方睇齊所有餐廳 menu，唔使周圍搵',
     statResto:'餐廳：', statDish:'菜式：', statMin:'最平：',
-    searchPh:'🔍 搜尋菜式 / 價錢…',
-    catAll:'全部', catSet:'🍱 套餐', catBeef:'🥩 牛', catPork:'🥓 豬', catChicken:'🍗 雞',
-    sortDef:'預設排序', sortAsc:'價錢 ↑ 低至高', sortDesc:'價錢 ↓ 高至低',
-    r1Name:'燒肉LIKE', r1Cuisine:'日式一人燒肉', r1Area:'香港多區',
-    r1ReviewCnt:'12 個評論', r1QuickLabel:'網民食評', r1QuickDesc:'快捷抵食之選',
-    r1F1:'👤 一人前座位', r1F2:'🚫 無煙烤爐', r1F3:'📱 QR Code 落單', r1F4:'⚡ 出餐快', r1F5:'💰 平價',
-    lblCuisine:'菜式：', lblArea:'地區：', lblBranches:'分店',
-    lblAddr:'地址', lblHours:'營業時間', lblPhone:'電話', lblPrice:'人均', lblLastOrder:'最後落單',
+    searchPh:'🔍 搜尋餐廳 / 菜式…',
+    menuSearchPh:'🔍 搜尋…',
+    lblCountry:'國家', lblType:'類型',
+    sortDef:'預設排序', sortRating:'評分 ↓ 高至低', sortAsc:'最平 ↑ 低至高', sortDesc:'價錢 ↓ 高至低',
+    back:'返回列表', menuTitle:'Menu',
+    viewMenu:'查看 Menu →', branchLabel:'間分店',
+    lblBranches:'分店', lblAddr:'地址', lblHours:'營業時間', lblPhone:'電話', lblPrice:'人均', lblLastOrder:'最後落單',
     btnMap:'📍 Google 地圖', btnCall:'📞 致電',
-    menuTitle:'菜單',
+    cntList:'顯示 {x} / {y} 間餐廳',
+    cntMenu:'（{x} 款）', emptyList:'🙈 搵唔到符合嘅餐廳', emptyMenu:'🙈 搵唔到符合嘅菜式',
     footRef:'資料僅供參考，實際以餐廳公佈為準', footUpdated:'更新日期', footSource:'來源',
-    cnt:'（顯示 {x} / {y}）', empty:'🙈 搵唔到符合嘅菜式',
-    catLabel:{set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 豬',chicken:'🍗 雞'},
-    branches:[
-      {name:'旺角 MOKO 新世紀廣場', area:'旺角', addr:'太子道西193號 MOKO 新世紀廣場 3樓 301-302號舖', hours:'每日 11:30–22:30', lastOrder:'21:30', phone:'2152 9433', price:'$80–150', lat:22.3217, lng:114.1726},
-      {name:'銅鑼灣（英皇鐘錶珠寶中心）', area:'銅鑼灣', addr:'羅素街 英皇鐘錶珠寶中心', hours:'每日 11:30–22:30', phone:'—', price:'$101–200', lat:22.2819, lng:114.1855},
-      {name:'尖沙咀 The Wai', area:'尖沙咀', addr:'彌敦道132號 美麗華廣場 The Wai', hours:'每日 11:30–22:30', phone:'—', price:'$80–150', lat:22.3001, lng:114.1737},
-    ],
-    dishes:[
-      {n:'LIKE 牛肉溫泉蛋飯套餐', en:'LIKE Beef & Onsen Egg Rice Set (200g)', p:38, was:67, cat:'set', note:'🔥 超值優惠價'},
-      {n:'牛五花套餐', en:'Karubi Beef Set (100g)', p:48, was:64, cat:'set', note:'🔥 優惠價'},
-      {n:'豬五花腩 & 雞腿肉套餐', en:'Pork Belly & Chicken Thigh Set (150g)', p:48, cat:'set', note:'🔥 雙拼優惠'},
-      {n:'NEXT 牛五花套餐', en:'NEXT Karubi Beef Set (100g)', p:78, cat:'set'},
-      {n:'NEXT 橫膈膜肉套餐', en:'NEXT Harami Set (100g)', p:78, cat:'set'},
-      {n:'認證安格斯肩肉 & 牛五花套餐', en:'Cert. Angus Shoulder & Karubi Set (250g)', p:128, cat:'set', note:'🎊 連飯、湯、前菜'},
-      {n:'認證安格斯牛五花', en:'Certified Angus Beef® Premium Karubi', p:112, cat:'beef', note:'⭐ 招牌'},
-      {n:'橫膈膜肉', en:'Harami', p:120, cat:'beef', note:'⭐ 招牌'},
-      {n:'豬五花', en:'Pork Belly', p:30, cat:'pork'},
-      {n:'炭燒雞', en:'Sumiyaki Chicken', p:32, cat:'chicken'},
-      {n:'黑安格斯漢堡排', en:'Black Angus Burger Steak (1pc)', p:40, cat:'beef'},
-    ]
   },
   "zh-CN": {
     title:'🍽️ 餐厅 <span>菜单汇集</span>',
-    subtitle:'看完菜单先决定去不去 🥩',
+    subtitle:'一个地方看齐所有餐厅 menu，不用到处找',
     statResto:'餐厅：', statDish:'菜品：', statMin:'最便宜：',
-    searchPh:'🔍 搜索菜品 / 价格…',
-    catAll:'全部', catSet:'🍱 套餐', catBeef:'🥩 牛', catPork:'🥓 猪', catChicken:'🍗 鸡',
-    sortDef:'默认排序', sortAsc:'价格 ↑ 低到高', sortDesc:'价格 ↓ 高到低',
-    r1Name:'烧肉LIKE', r1Cuisine:'日式一人烧肉', r1Area:'香港多区',
-    r1ReviewCnt:'12 条评论', r1QuickLabel:'网友食评', r1QuickDesc:'快捷实惠之选',
-    r1F1:'👤 一人前座位', r1F2:'🚫 无烟烤炉', r1F3:'📱 扫码点单', r1F4:'⚡ 出餐快', r1F5:'💰 平价',
-    lblCuisine:'菜式：', lblArea:'地区：', lblBranches:'分店',
-    lblAddr:'地址', lblHours:'营业时间', lblPhone:'电话', lblPrice:'人均', lblLastOrder:'最后下单',
+    searchPh:'🔍 搜索餐厅 / 菜品…',
+    menuSearchPh:'🔍 搜索…',
+    lblCountry:'国家', lblType:'类型',
+    sortDef:'默认排序', sortRating:'评分 ↓ 高到低', sortAsc:'最便宜 ↑ 低到高', sortDesc:'价格 ↓ 高到低',
+    back:'返回列表', menuTitle:'Menu',
+    viewMenu:'查看 Menu →', branchLabel:'间分店',
+    lblBranches:'分店', lblAddr:'地址', lblHours:'营业时间', lblPhone:'电话', lblPrice:'人均', lblLastOrder:'最后下单',
     btnMap:'📍 谷歌地图', btnCall:'📞 致电',
-    menuTitle:'菜单',
+    cntList:'显示 {x} / {y} 间餐厅',
+    cntMenu:'（{x} 款）', emptyList:'🙈 找不到符合条件的餐厅', emptyMenu:'🙈 找不到符合条件的菜品',
     footRef:'资料仅供参考，实际以餐厅公布为准', footUpdated:'更新日期', footSource:'来源',
-    cnt:'（显示 {x} / {y}）', empty:'🙈 找不到符合条件的菜品',
-    catLabel:{set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 猪',chicken:'🍗 鸡'},
-    branches:[
-      {name:'旺角 MOKO 新世纪广场', area:'旺角', addr:'太子道西193号 MOKO 新世纪广场 3楼 301-302号铺', hours:'每日 11:30–22:30', lastOrder:'21:30', phone:'2152 9433', price:'$80–150', lat:22.3217, lng:114.1726},
-      {name:'铜锣湾（英皇钟表珠宝中心）', area:'铜锣湾', addr:'罗素街 英皇钟表珠宝中心', hours:'每日 11:30–22:30', phone:'—', price:'$101–200', lat:22.2819, lng:114.1855},
-      {name:'尖沙咀 The Wai', area:'尖沙咀', addr:'弥敦道132号 美丽华广场 The Wai', hours:'每日 11:30–22:30', phone:'—', price:'$80–150', lat:22.3001, lng:114.1737},
-    ],
-    dishes:[
-      {n:'LIKE 牛肉温泉蛋饭套餐', en:'LIKE Beef & Onsen Egg Rice Set (200g)', p:38, was:67, cat:'set', note:'🔥 超值优惠价'},
-      {n:'牛五花套餐', en:'Karubi Beef Set (100g)', p:48, was:64, cat:'set', note:'🔥 优惠价'},
-      {n:'猪五花肉 & 鸡腿肉套餐', en:'Pork Belly & Chicken Thigh Set (150g)', p:48, cat:'set', note:'🔥 双拼优惠'},
-      {n:'NEXT 牛五花套餐', en:'NEXT Karubi Beef Set (100g)', p:78, cat:'set'},
-      {n:'NEXT 横膈膜肉套餐', en:'NEXT Harami Set (100g)', p:78, cat:'set'},
-      {n:'认证安格斯肩肉 & 牛五花套餐', en:'Cert. Angus Shoulder & Karubi Set (250g)', p:128, cat:'set', note:'🎊 含饭、汤、前菜'},
-      {n:'认证安格斯牛五花', en:'Certified Angus Beef® Premium Karubi', p:112, cat:'beef', note:'⭐ 招牌'},
-      {n:'横膈膜肉', en:'Harami', p:120, cat:'beef', note:'⭐ 招牌'},
-      {n:'猪五花', en:'Pork Belly', p:30, cat:'pork'},
-      {n:'炭烧鸡', en:'Sumiyaki Chicken', p:32, cat:'chicken'},
-      {n:'黑安格斯汉堡排', en:'Black Angus Burger Steak (1pc)', p:40, cat:'beef'},
-    ]
   },
   "en": {
     title:'🍽️ Restaurant <span>Menu Hub</span>',
-    subtitle:'Browse menus before you decide where to go 🥩',
+    subtitle:'All restaurant menus in one place — no more digging around',
     statResto:'Restaurants: ', statDish:'Dishes: ', statMin:'Cheapest: ',
-    searchPh:'🔍 Search dishes / prices…',
-    catAll:'All', catSet:'🍱 Sets', catBeef:'🥩 Beef', catPork:'🥓 Pork', catChicken:'🍗 Chicken',
-    sortDef:'Default order', sortAsc:'Price ↑ Low to High', sortDesc:'Price ↓ High to Low',
-    r1Name:'Yakiniku LIKE', r1Cuisine:'Japanese Solo Yakiniku', r1Area:'Multiple areas, HK',
-    r1ReviewCnt:'12 reviews', r1QuickLabel:'Foodie Review', r1QuickDesc:'Quick & wallet-friendly pick',
-    r1F1:'👤 Solo counter seats', r1F2:'🚫 Smokeless grill', r1F3:'📱 QR ordering', r1F4:'⚡ Fast service', r1F5:'💰 Budget-friendly',
-    lblCuisine:'Cuisine: ', lblArea:'Area: ', lblBranches:'Branches',
-    lblAddr:'Address', lblHours:'Hours', lblPhone:'Phone', lblPrice:'Avg spend', lblLastOrder:'Last order',
+    searchPh:'🔍 Search restaurants / dishes…',
+    menuSearchPh:'🔍 Search…',
+    lblCountry:'Cuisine', lblType:'Type',
+    sortDef:'Default', sortRating:'Rating ↓ High to Low', sortAsc:'Cheapest ↑ Low to High', sortDesc:'Price ↓ High to Low',
+    back:'Back to list', menuTitle:'Menu',
+    viewMenu:'View Menu →', branchLabel:'branches',
+    lblBranches:'Branches', lblAddr:'Address', lblHours:'Hours', lblPhone:'Phone', lblPrice:'Avg spend', lblLastOrder:'Last order',
     btnMap:'📍 Google Maps', btnCall:'📞 Call',
-    menuTitle:'Menu',
+    cntList:'Showing {x} / {y} restaurants',
+    cntMenu:'({x} items)', emptyList:'🙈 No restaurants match your search', emptyMenu:'🙈 No dishes match your search',
     footRef:'For reference only — actual items subject to restaurant', footUpdated:'Updated', footSource:'Source',
-    cnt:'(showing {x} / {y})', empty:'🙈 No dishes match your search',
-    catLabel:{set:'🍱 Set',beef:'🥩 Beef',pork:'🥓 Pork',chicken:'🍗 Chicken'},
-    branches:[
-      {name:'Mong Kok MOKO', area:'Mong Kok', addr:'Shop 301-302, L3, MOKO, 193 Prince Edward Rd West', hours:'Daily 11:30–22:30', lastOrder:'21:30', phone:'2152 9433', price:'$80–150', lat:22.3217, lng:114.1726},
-      {name:'Causeway Bay (Emperor Watch & Jewellery Centre)', area:'Causeway Bay', addr:'Russell Street, Emperor Watch & Jewellery Centre', hours:'Daily 11:30–22:30', phone:'—', price:'$101–200', lat:22.2819, lng:114.1855},
-      {name:'Tsim Sha Tsui The Wai', area:'TST', addr:'The Wai, Miramar Square, 132 Nathan Rd', hours:'Daily 11:30–22:30', phone:'—', price:'$80–150', lat:22.3001, lng:114.1737},
-    ],
-    dishes:[
-      {n:'LIKE Beef & Onsen Egg Rice Set', en:'LIKE 牛肉溫泉蛋飯套餐 (200g)', p:38, was:67, cat:'set', note:'🔥 Special offer'},
-      {n:'Karubi Beef Set', en:'牛五花套餐 (100g)', p:48, was:64, cat:'set', note:'🔥 Offer price'},
-      {n:'Pork Belly & Chicken Thigh Set', en:'豬五花腩 & 雞腿肉套餐 (150g)', p:48, cat:'set', note:'🔥 Duo combo'},
-      {n:'NEXT Karubi Beef Set', en:'NEXT 牛五花套餐 (100g)', p:78, cat:'set'},
-      {n:'NEXT Harami Set', en:'NEXT 橫膈膜肉套餐 (100g)', p:78, cat:'set'},
-      {n:'Cert. Angus Shoulder & Karubi Set', en:'認證安格斯肩肉 & 牛五花套餐 (250g)', p:128, cat:'set', note:'🎊 w/ rice, soup, side'},
-      {n:'Certified Angus Beef® Premium Karubi', en:'認證安格斯牛五花', p:112, cat:'beef', note:'⭐ Signature'},
-      {n:'Harami (Skirt Steak)', en:'橫膈膜肉', p:120, cat:'beef', note:'⭐ Signature'},
-      {n:'Pork Belly', en:'豬五花', p:30, cat:'pork'},
-      {n:'Sumiyaki Chicken', en:'炭燒雞', p:32, cat:'chicken'},
-      {n:'Black Angus Burger Steak (1pc)', en:'黑安格斯漢堡排', p:40, cat:'beef'},
-    ]
   }
 };
 
 let curLang='zh-HK';
+let curCountry='all';
+let curType='all';
+let curResto=null;   // 當前詳情頁嘅餐廳 id
 
-/* 畫星星：score 係 0-5，max 係分母（5 或 10 會自動縮成 5 星制）*/
-function renderStars(elId, score, max=5){
-  const norm = max===10 ? score/2 : score; // 統一成 5 星制
-  const full = Math.floor(norm);
-  const round = Math.round(norm); // 四捨五入，避免半星字符兼容問題
+const L = (key) => I18N[curLang][key];        // UI label
+const T = (obj) => obj?.[curLang] ?? obj?.['zh-HK'] ?? '';  // 多語言欄位取值
+
+/* ========== 星星 ========== */
+function renderStars(score, max=5){
+  const norm = max===10 ? score/2 : score;
+  const round = Math.round(norm);
   const empty = 5 - round;
   let html = '★'.repeat(round);
   if(empty>0) html += '<span class="off">'+'★'.repeat(empty)+'</span>';
-  const el=document.getElementById(elId);
-  if(el) el.innerHTML=html;
+  return html;
 }
 
-/* 渲染分店 accordion */
-function renderBranches(){
+/* ========== 篩選 chips ========== */
+function renderFilterChips(){
   const t=I18N[curLang];
-  const list=document.getElementById('branchList');
-  const cnt=document.getElementById('branchCnt');
-  if(!list) return;
-  cnt.textContent=t.branches.length;
-  list.innerHTML=t.branches.map((b,i)=>{
-    const mapUrl=`https://www.google.com/maps/search/?api=1&query=${b.lat},${b.lng}`;
-    const callUrl=b.phone&&b.phone!=='—' ? `tel:${b.phone.replace(/\s/g,'')}` : null;
+  // 國家
+  document.getElementById('countryFilters').innerHTML =
+    `<span class="chip active" data-cat="all" data-group="country">${L('sortDef').includes('Default')?'All':curLang==='en'?'All':'全部'}</span>` +
+    CATEGORIES.countries.map(c=>`<span class="chip" data-cat="${c.key}" data-group="country">${T(c.label)}</span>`).join('');
+  // 類型
+  document.getElementById('typeFilters').innerHTML =
+    `<span class="chip active" data-cat="all" data-group="type">${curLang==='en'?'All':'全部'}</span>` +
+    CATEGORIES.types.map(c=>`<span class="chip" data-cat="${c.key}" data-group="type">${T(c.label)}</span>`).join('');
+}
+
+/* ========== 列表頁 ========== */
+function renderRestaurants(){
+  const t=I18N[curLang];
+  let list=RESTAURANTS.slice();
+
+  // 搜尋
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  if(q){
+    list=list.filter(r=>
+      T(r.name).toLowerCase().includes(q) ||
+      T(r.cuisine).toLowerCase().includes(q) ||
+      r.dishes.some(d=> T(d.n).toLowerCase().includes(q) || (d.en&&T(d.en).toLowerCase().includes(q)) || String(d.p).includes(q))
+    );
+  }
+  // 國家
+  if(curCountry!=='all') list=list.filter(r=>r.countries.includes(curCountry));
+  // 類型
+  if(curType!=='all') list=list.filter(r=>r.types.includes(curType));
+  // 排序
+  const sv=document.getElementById('sort').value;
+  if(sv==='rating') list.sort((a,b)=>(b.rating?.score||0)-(a.rating?.score||0));
+  else if(sv==='asc') list.sort((a,b)=>minPrice(a)-minPrice(b));
+
+  document.getElementById('listInfo').textContent=t.cntList.replace('{x}',list.length).replace('{y}',RESTAURANTS.length);
+
+  const grid=document.getElementById('cardGrid');
+  if(list.length===0){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">'+t.emptyList+'</div>'; return; }
+
+  grid.innerHTML=list.map(r=>{
+    const mp=minPrice(r);
+    const cnt=r.branches.length;
+    const stars=r.rating ? renderStars(r.rating.score, r.rating.max) : '';
     return `
-    <details class="branch-item" ${i===0?'open':''}>
-      <summary class="branch-summary">
-        <span class="b-icon">🏪</span>
-        <span class="b-name">${b.name}<br><span class="b-area">${b.area}</span></span>
-        <span class="b-arrow">▶</span>
-      </summary>
-      <div class="branch-body">
-        <div class="branch-row"><span class="lbl">${t.lblAddr}</span><span class="val">${b.addr}</span></div>
-        <div class="branch-row"><span class="lbl">${t.lblHours}</span><span class="val">${b.hours}${b.lastOrder?` <span style="color:var(--muted)">(${t.lblLastOrder} ${b.lastOrder})</span>`:''}</span></div>
-        <div class="branch-row"><span class="lbl">${t.lblPhone}</span><span class="val">${b.phone}</span></div>
-        <div class="branch-row"><span class="lbl">${t.lblPrice}</span><span class="val">${b.price}</span></div>
-        <div class="branch-actions">
-          <a class="branch-btn" href="${mapUrl}" target="_blank" rel="noopener">${t.btnMap}</a>
-          ${callUrl?`<a class="branch-btn" href="${callUrl}">${t.btnCall}</a>`:''}
-        </div>
+    <div class="resto-card" data-id="${r.id}">
+      <div class="card-top">
+        <span class="card-emoji">${r.emoji||'🍽️'}</span>
+        <span class="card-name">${T(r.name)}</span>
       </div>
-    </details>`;
+      <div class="card-cats">
+        ${r.countries.map(c=>`<span class="card-cat">${T(CATEGORIES.countries.find(x=>x.key===c)?.label||'')}</span>`).join('')}
+        ${r.types.map(c=>`<span class="card-cat">${T(CATEGORIES.types.find(x=>x.key===c)?.label||'')}</span>`).join('')}
+      </div>
+      <div class="card-cuisine">${T(r.cuisine)}</div>
+      <div class="card-stats">
+        ${r.rating?`<span class="card-stat">⭐ <b>${r.rating.score}</b> <span style="color:var(--muted);font-size:.75rem">${r.rating.src}</span></span>`:''}
+        <span class="card-stat">💵 <b>$${mp}${curLang==='en'?' up':' 起'}</b></span>
+        <span class="card-stat">🏬 <b>${cnt}</b> ${t.branchLabel}</span>
+      </div>
+      <div class="card-cta">${t.viewMenu}</div>
+    </div>`;
   }).join('');
 }
 
-function applyLang(lang){
-  curLang=lang;
-  const t=I18N[lang];
-  document.documentElement.lang=lang;
-  // text
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k=el.getAttribute('data-i18n');
-    if(t[k]) el.innerHTML=t[k];
-  });
-  // placeholder
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-    const k=el.getAttribute('data-i18n-ph');
-    if(t[k]) el.placeholder=t[k];
-  });
-  // lang buttons
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
-  // 渲染星星
-  renderStars('taStars', 3.9, 5);
-  renderStars('igStars', 8, 10);
-  // 渲染分店
-  renderBranches();
-  render();
+function minPrice(r){ return Math.min(...r.dishes.map(d=>d.p)); }
+
+/* ========== 詳情頁 ========== */
+function openRestaurant(id){
+  curResto=id;
+  const r=RESTAURANTS.find(x=>x.id===id);
+  if(!r) return;
+  const t=I18N[curLang];
+
+  // 卡片
+  const card=document.getElementById('detailCard');
+  const stars=r.rating?renderStars(r.rating.score,r.rating.max):'';
+  card.innerHTML=`
+    <div class="detail-top">
+      <div class="detail-name"><span class="emoji">${r.emoji||'🍽️'}</span> ${T(r.name)}</div>
+      <div class="detail-cats">
+        ${r.countries.map(c=>`<span class="card-cat">${T(CATEGORIES.countries.find(x=>x.key===c)?.label||'')}</span>`).join('')}
+        ${r.types.map(c=>`<span class="card-cat">${T(CATEGORIES.types.find(x=>x.key===c)?.label||'')}</span>`).join('')}
+      </div>
+      <div class="detail-cuisine">${T(r.cuisine)} · ${T(r.area)}</div>
+      <div class="detail-feat">
+        ${r.features.map(f=>`<span class="feat">${T(FEATURES[f]||{'zh-HK':f})}</span>`).join('')}
+      </div>
+    </div>
+    ${r.rating||r.rating2?`
+    <div class="ratings">
+      ${r.rating?`<div class="rating-card">
+        <div class="rating-src">${r.rating.src}</div>
+        <div class="rating-val"><span class="rating-num">${r.rating.score}<small>/${r.rating.max}</small></span><span class="stars">${stars}</span></div>
+        <div class="rating-cnt">${T(r.rating.count)}</div>
+      </div>`:''}
+      ${r.rating2?`<div class="rating-card">
+        <div class="rating-src">${T(r.rating2.srcLabel)}</div>
+        <div class="rating-val"><span class="rating-num">${r.rating2.score}<small>/${r.rating2.max}</small></span><span class="stars">${renderStars(r.rating2.score,r.rating2.max)}</span></div>
+        <div class="rating-cnt">${T(r.rating2.desc)}</div>
+      </div>`:''}
+    </div>`:''}
+    <div class="branches-acc">
+      <div class="branches-head">🏬 <span>${t.lblBranches}</span> <span class="cnt-badge">${r.branches.length}</span></div>
+      ${r.branches.map((b,i)=>`
+        <details class="branch-item" ${i===0?'open':''}>
+          <summary class="branch-summary">
+            <span class="b-icon">🏪</span>
+            <span class="b-name">${T(b.name)}<br><span class="b-area">${T(b.area)}</span></span>
+            <span class="b-arrow">▶</span>
+          </summary>
+          <div class="branch-body">
+            <div class="branch-row"><span class="lbl">${t.lblAddr}</span><span class="val">${T(b.addr)}</span></div>
+            <div class="branch-row"><span class="lbl">${t.lblHours}</span><span class="val">${T(b.hours)}${b.lastOrder?` <span style="color:var(--muted)">(${t.lblLastOrder} ${b.lastOrder})</span>`:''}</span></div>
+            <div class="branch-row"><span class="lbl">${t.lblPhone}</span><span class="val">${b.phone}</span></div>
+            <div class="branch-row"><span class="lbl">${t.lblPrice}</span><span class="val">${T(b.price)}</span></div>
+            <div class="branch-actions">
+              <a class="branch-btn" href="https://www.google.com/maps/search/?api=1&query=${b.lat},${b.lng}" target="_blank" rel="noopener">${t.btnMap}</a>
+              ${b.phone&&b.phone!=='—'?`<a class="branch-btn" href="tel:${b.phone.replace(/\s/g,'')}">${t.btnCall}</a>`:''}
+            </div>
+          </div>
+        </details>`).join('')}
+    </div>
+  `;
+
+  // 重置 menu 搜尋
+  document.getElementById('menuSearch').value='';
+  document.getElementById('menuSort').value='default';
+  renderMenu();
+
+  // 切換 view
+  document.getElementById('listView').classList.add('hidden');
+  document.getElementById('detailView').classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
-/* ========== 渲染 ========== */
-const grid=document.getElementById('grid');
-const search=document.getElementById('search');
-const filters=document.getElementById('filters');
-const sortSel=document.getElementById('sort');
-let curCat='all';
+function backToList(){
+  curResto=null;
+  document.getElementById('detailView').classList.add('hidden');
+  document.getElementById('listView').classList.remove('hidden');
+  if(location.hash) history.replaceState(null,'',location.pathname);
+}
 
-function render(){
+/* ========== Menu 渲染（詳情頁）========== */
+function renderMenu(){
+  const r=RESTAURANTS.find(x=>x.id===curResto);
+  if(!r) return;
   const t=I18N[curLang];
-  let list=t.dishes.slice();
-  const q=search.value.trim().toLowerCase();
+  let list=r.dishes.slice();
+
+  const q=document.getElementById('menuSearch').value.trim().toLowerCase();
   if(q){
-    list=list.filter(d=>
-      d.n.toLowerCase().includes(q)||
-      (d.en||'').toLowerCase().includes(q)||
-      String(d.p).includes(q)
-    );
+    list=list.filter(d=>T(d.n).toLowerCase().includes(q)||(d.en&&T(d.en).toLowerCase().includes(q))||String(d.p).includes(q));
   }
-  if(curCat!=='all') list=list.filter(d=>d.cat===curCat);
-  const sv=sortSel.value;
+  const sv=document.getElementById('menuSort').value;
   if(sv==='asc') list.sort((a,b)=>a.p-b.p);
   if(sv==='desc') list.sort((a,b)=>b.p-a.p);
 
-  document.getElementById('cnt').textContent=t.cnt.replace('{x}',list.length).replace('{y}',t.dishes.length);
+  document.getElementById('cnt').textContent=t.cntMenu.replace('{x}',list.length);
+  const grid=document.getElementById('grid');
+  if(list.length===0){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">'+t.emptyMenu+'</div>'; return; }
 
-  if(list.length===0){
-    grid.innerHTML='<div class="empty" style="grid-column:1/-1">'+t.empty+'</div>';
-    return;
-  }
   grid.innerHTML=list.map(d=>`
     <div class="item">
       <div class="item-top">
         <div>
-          <div class="item-name">${d.n}</div>
-          ${d.en?`<div class="item-name en">${d.en}</div>`:''}
+          <div class="item-name">${T(d.n)}</div>
+          ${d.en&&T(d.en)?`<div class="item-name en">${T(d.en)}</div>`:''}
         </div>
         <div class="item-price">$${d.p}${d.was?`<span class="was">$${d.was}</span>`:''}</div>
       </div>
-      <span class="item-cat cat-${d.cat}">${t.catLabel[d.cat]}</span>
-      ${d.note?`<div class="item-note">${d.note}</div>`:''}
-    </div>
-  `).join('');
+      ${d.tag?`<span class="item-tag">${T(d.tag)}</span>`:''}
+    </div>`).join('');
+}
+
+/* ========== 語言切換 ========== */
+function applyLang(lang){
+  curLang=lang;
+  document.documentElement.lang=lang;
+  const t=I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(t[k]) el.innerHTML=t[k]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); if(t[k]) el.placeholder=t[k]; });
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+  renderFilterChips();
+  // 重設 chips active 狀態
+  document.querySelectorAll('#countryFilters .chip').forEach(c=>c.classList.toggle('active', c.dataset.cat===curCountry));
+  document.querySelectorAll('#typeFilters .chip').forEach(c=>c.classList.toggle('active', c.dataset.cat===curType));
+  // 統計
+  document.getElementById('rCount').textContent=RESTAURANTS.length;
+  document.getElementById('dCount').textContent=RESTAURANTS.reduce((s,r)=>s+r.dishes.length,0);
+  const allPrices=RESTAURANTS.flatMap(r=>r.dishes.map(d=>d.p));
+  document.getElementById('minP').textContent='$'+Math.min(...allPrices);
+  // 重新渲染
+  renderRestaurants();
+  if(curResto) openRestaurant(curResto);
 }
 
 /* ========== 事件 ========== */
-search.addEventListener('input',render);
-sortSel.addEventListener('change',render);
-filters.addEventListener('click',e=>{
-  if(e.target.classList.contains('chip')){
-    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-    e.target.classList.add('active');
-    curCat=e.target.dataset.cat;
-    render();
-  }
+document.getElementById('search').addEventListener('input',renderRestaurants);
+document.getElementById('sort').addEventListener('change',renderRestaurants);
+document.getElementById('menuSearch').addEventListener('input',renderMenu);
+document.getElementById('menuSort').addEventListener('change',renderMenu);
+document.getElementById('backBtn').addEventListener('click',backToList);
+
+// 列表卡片點擊
+document.getElementById('cardGrid').addEventListener('click',e=>{
+  const card=e.target.closest('.resto-card');
+  if(card){ openRestaurant(card.dataset.id); location.hash=card.dataset.id; }
 });
-document.querySelectorAll('.lang-btn').forEach(b=>{
-  b.addEventListener('click',()=>applyLang(b.dataset.lang));
+
+// 篩選 chips（國家 + 類型，分組）
+document.addEventListener('click',e=>{
+  const chip=e.target.closest('.chip[data-group]');
+  if(!chip) return;
+  const group=chip.dataset.group;
+  const cat=chip.dataset.cat;
+  // 只喺同一組內切換 active
+  chip.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  if(group==='country') curCountry=cat;
+  else curType=cat;
+  renderRestaurants();
+});
+
+// 語言按鈕
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
+
+// hash 路由
+window.addEventListener('hashchange',()=>{
+  const id=location.hash.slice(1);
+  if(id && RESTAURANTS.some(r=>r.id===id)){
+    if(curResto!==id) openRestaurant(id);
+  } else if(!id && curResto){
+    backToList();
+  }
 });
 
 /* ========== 初始化 ========== */
-const firstDish=I18N[curLang].dishes;
-document.getElementById('dCount').textContent=firstDish.length;
-document.getElementById('minP').textContent='$'+Math.min(...firstDish.map(d=>d.p));
 applyLang('zh-HK');
+// 如果有 hash，直接開嗰間
+const initId=location.hash.slice(1);
+if(initId && RESTAURANTS.some(r=>r.id===initId)) openRestaurant(initId);
 </script>
 </body>
 </html>

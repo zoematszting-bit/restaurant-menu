@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍽️ 餐廳 Menu 匯集</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --card2:#22262f; --border:#2e333d;
+    --txt:#e8eaed; --muted:#9aa0a6; --accent:#ff6b35; --accent2:#ffb347;
+    --green:#34d399; --red:#f87171;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang HK","Microsoft JhengHei",sans-serif;
+    background:var(--bg); color:var(--txt); line-height:1.6; padding-bottom:60px;
+  }
+  /* Header */
+  header{
+    background:linear-gradient(135deg,#1a1d24 0%,#2a1810 100%);
+    border-bottom:1px solid var(--border); padding:28px 20px 24px; text-align:center;
+  }
+  header h1{font-size:1.8rem; letter-spacing:.5px;}
+  header h1 span{color:var(--accent);}
+  header p{color:var(--muted); font-size:.9rem; margin-top:6px;}
+  .stats{display:flex; gap:18px; justify-content:center; margin-top:14px; flex-wrap:wrap;}
+  .stat{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 16px; font-size:.85rem;}
+  .stat b{color:var(--accent2);}
+
+  /* Controls */
+  .controls{
+    position:sticky; top:0; z-index:10; background:rgba(15,17,21,.96); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border); padding:14px 20px;
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:center;
+  }
+  .search{
+    flex:1; min-width:200px; max-width:380px; padding:10px 14px;
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    color:var(--txt); font-size:.95rem;
+  }
+  .search:focus{outline:none; border-color:var(--accent);}
+  .filters{display:flex; gap:6px; flex-wrap:wrap;}
+  .chip{
+    padding:8px 14px; border-radius:20px; border:1px solid var(--border);
+    background:var(--card); color:var(--muted); cursor:pointer; font-size:.82rem;
+    transition:all .15s; user-select:none;
+  }
+  .chip:hover{border-color:var(--accent2); color:var(--txt);}
+  .chip.active{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600;}
+  select.sort{
+    padding:8px 12px; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; color:var(--txt); font-size:.85rem; cursor:pointer;
+  }
+
+  /* Restaurant banner */
+  .resto{
+    max-width:980px; margin:22px auto 0; padding:0 20px;
+  }
+  .resto-card{
+    background:linear-gradient(135deg,var(--card) 0%, var(--card2) 100%);
+    border:1px solid var(--border); border-radius:16px; overflow:hidden;
+  }
+  .resto-head{padding:24px 26px; border-bottom:1px solid var(--border); position:relative;}
+  .resto-head::before{content:""; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  .resto-name{font-size:1.6rem; font-weight:700;}
+  .resto-name .tag{display:inline-block; font-size:.7rem; vertical-align:middle; margin-left:10px; background:var(--accent); color:#fff; padding:3px 10px; border-radius:12px; font-weight:600;}
+  .resto-meta{display:flex; gap:18px; margin-top:10px; flex-wrap:wrap; font-size:.85rem; color:var(--muted);}
+  .resto-meta b{color:var(--accent2);}
+  .resto-feat{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
+  .feat{font-size:.78rem; background:var(--card2); border:1px solid var(--border); padding:5px 12px; border-radius:8px; color:var(--muted);}
+  .resto-branches{padding:14px 26px; background:rgba(0,0,0,.2); font-size:.85rem;}
+  .resto-branches b{color:var(--green);}
+  .resto-branches span{display:inline-block; margin:0 8px; color:var(--muted);}
+
+  /* Menu grid */
+  .menu-wrap{max-width:980px; margin:20px auto 0; padding:0 20px;}
+  .menu-title{font-size:1.1rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+  .menu-title .cnt{color:var(--muted); font-size:.85rem; font-weight:400;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px;}
+  .item{
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; transition:all .18s; cursor:default;
+  }
+  .item:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,107,53,.12);}
+  .item-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .item-name{font-weight:600; font-size:1rem;}
+  .item-name.en{color:var(--muted); font-size:.78rem; font-weight:400; margin-top:2px;}
+  .item-price{color:var(--accent2); font-weight:700; font-size:1.05rem; white-space:nowrap;}
+  .item-price .was{color:var(--muted); text-decoration:line-through; font-size:.75rem; font-weight:400; margin-left:4px;}
+  .item-cat{display:inline-block; margin-top:10px; font-size:.72rem; padding:3px 9px; border-radius:6px;}
+  .cat-set{background:rgba(255,107,53,.15); color:var(--accent2);}
+  .cat-beef{background:rgba(248,113,113,.15); color:var(--red);}
+  .cat-pork{background:rgba(255,179,71,.15); color:var(--accent2);}
+  .cat-chicken{background:rgba(52,211,153,.15); color:var(--green);}
+  .item-note{font-size:.8rem; color:var(--muted); margin-top:8px;}
+
+  .empty{text-align:center; padding:60px 20px; color:var(--muted);}
+  footer{text-align:center; margin-top:40px; color:var(--muted); font-size:.78rem;}
+  footer a{color:var(--accent2);}
+
+  @media(max-width:600px){
+    header h1{font-size:1.4rem;}
+    .resto-name{font-size:1.3rem;}
+    .grid{grid-template-columns:1fr 1fr; gap:10px;}
+    .item{padding:14px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍽️ 餐廳 <span>Menu 匯集</span></h1>
+  <p>睇完 menu 先決定去唔去 🥩</p>
+  <div class="stats">
+    <div class="stat">餐廳：<b id="rCount">1</b></div>
+    <div class="stat">菜式：<b id="dCount">0</b></div>
+    <div class="stat">最平：<b id="minP">—</b></div>
+  </div>
+</header>
+
+<div class="controls">
+  <input type="text" class="search" id="search" placeholder="🔍 搜尋菜式 / 價錢…">
+  <div class="filters" id="filters">
+    <span class="chip active" data-cat="all">全部</span>
+    <span class="chip" data-cat="set">🍱 套餐</span>
+    <span class="chip" data-cat="beef">🥩 牛</span>
+    <span class="chip" data-cat="pork">🥓 豬</span>
+    <span class="chip" data-cat="chicken">🍗 雞</span>
+  </div>
+  <select class="sort" id="sort">
+    <option value="default">預設排序</option>
+    <option value="asc">價錢 ↑ 低至高</option>
+    <option value="desc">價錢 ↓ 高至低</option>
+  </select>
+</div>
+
+<!-- 餐廳資訊 -->
+<div class="resto">
+  <div class="resto-card">
+    <div class="resto-head">
+      <div class="resto-name">燒肉LIKE <span class="tag">YAKINIKU LIKE</span></div>
+      <div class="resto-meta">
+        <span>🍱 菜式：<b>日式一人燒肉</b></span>
+        <span>📍 地區：<b>香港多區</b></span>
+        <span>⭐ <b>人氣連鎖</b></span>
+      </div>
+      <div class="resto-feat">
+        <span class="feat">👤 一人前座位</span>
+        <span class="feat">🚫 無煙烤爐</span>
+        <span class="feat">📱 QR Code 落單</span>
+        <span class="feat">⚡ 出餐快</span>
+        <span class="feat">💰 平價</span>
+      </div>
+    </div>
+    <div class="resto-branches">
+      🏬 <b>分店：</b>
+      <span>旺角 MOKO</span>·
+      <span>銅鑼灣</span>·
+      <span>尖沙咀 The Wai</span>·
+      <span>（及全港其他分店）</span>
+    </div>
+  </div>
+</div>
+
+<!-- Menu -->
+<div class="menu-wrap">
+  <div class="menu-title">🥩 菜單 <span class="cnt" id="cnt"></span></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer>
+  資料僅供參考，實際以餐廳公佈為準 · 更新日期 2026-08-05<br>
+  來源：<a href="https://www.openrice.com/en/hongkong/menu/807194/takeaway" target="_blank">OpenRice</a> ·
+  <a href="https://www.facebook.com/yakinikulikehk/" target="_blank">燒肉LIKE FB</a>
+</footer>
+
+<script>
+const dishes = [
+  {n:"LIKE 牛肉溫泉蛋飯套餐", en:"LIKE Beef & Onsen Egg Rice Set (200g)", p:38, was:67, cat:"set", note:"🔥 超值優惠價"},
+  {n:"牛五花套餐", en:"Karubi Beef Set (100g)", p:48, was:64, cat:"set", note:"🔥 優惠價"},
+  {n:"豬五花腩 & 雞腿肉套餐", en:"Pork Belly & Chicken Thigh Set (150g)", p:48, cat:"set", note:"🔥 雙拼優惠"},
+  {n:"NEXT 牛五花套餐", en:"NEXT Karubi Beef Set (100g)", p:78, cat:"set"},
+  {n:"NEXT 橫膈膜肉套餐", en:"NEXT Harami Set (100g)", p:78, cat:"set"},
+  {n:"認證安格斯肩肉 & 牛五花套餐", en:"Cert. Angus Shoulder & Karubi Set (250g)", p:128, cat:"set", note:"🎊 連飯、湯、前菜"},
+  {n:"認證安格斯牛五花", en:"Certified Angus Beef® Premium Karubi", p:112, cat:"beef", note:"⭐ 招牌"},
+  {n:"橫膈膜肉", en:"Harami", p:120, cat:"beef", note:"⭐ 招牌"},
+  {n:"豬五花", en:"Pork Belly", p:30, cat:"pork"},
+  {n:"炭燒雞", en:"Sumiyaki Chicken", p:32, cat:"chicken"},
+  {n:"黑安格斯漢堡排", en:"Black Angus Burger Steak (1pc)", p:40, cat:"beef"},
+];
+
+const grid=document.getElementById('grid');
+const search=document.getElementById('search');
+const filters=document.getElementById('filters');
+const sortSel=document.getElementById('sort');
+let curCat='all';
+
+function catLabel(c){
+  return {set:'🍱 套餐',beef:'🥩 牛',pork:'🥓 豬',chicken:'🍗 雞'}[c]||c;
+}
+
+function render(){
+  let list=dishes.slice();
+  const q=search.value.trim().toLowerCase();
+  if(q){
+    list=list.filter(d=>
+      d.n.toLowerCase().includes(q)||
+      (d.en||'').toLowerCase().includes(q)||
+      String(d.p).includes(q)
+    );
+  }
+  if(curCat!=='all') list=list.filter(d=>d.cat===curCat);
+  const sv=sortSel.value;
+  if(sv==='asc') list.sort((a,b)=>a.p-b.p);
+  if(sv==='desc') list.sort((a,b)=>b.p-a.p);
+
+  document.getElementById('cnt').textContent=`（顯示 ${list.length} / ${dishes.length}）`;
+
+  if(list.length===0){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1">🙈 搵唔到符合嘅菜式</div>';
+    return;
+  }
+  grid.innerHTML=list.map(d=>`
+    <div class="item">
+      <div class="item-top">
+        <div>
+          <div class="item-name">${d.n}</div>
+          ${d.en?`<div class="item-name en">${d.en}</div>`:''}
+        </div>
+        <div class="item-price">$${d.p}${d.was?`<span class="was">$${d.was}</span>`:''}</div>
+      </div>
+      <span class="item-cat cat-${d.cat}">${catLabel(d.cat)}</span>
+      ${d.note?`<div class="item-note">${d.note}</div>`:''}
+    </div>
+  `).join('');
+}
+
+search.addEventListener('input',render);
+sortSel.addEventListener('change',render);
+filters.addEventListener('click',e=>{
+  if(e.target.classList.contains('chip')){
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    e.target.classList.add('active');
+    curCat=e.target.dataset.cat;
+    render();
+  }
+});
+
+// stats
+document.getElementById('dCount').textContent=dishes.length;
+document.getElementById('minP').textContent='$'+Math.min(...dishes.map(d=>d.p));
+
+render();
+</script>
+</body>
+</html>
